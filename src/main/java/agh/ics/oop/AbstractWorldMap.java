@@ -13,7 +13,6 @@ public abstract class AbstractWorldMap {
     }
     public void place(Animal animal) {
         animals.put(animal.getPosition(), animal);
-
     }
 
     public Object objectAt(Vector2d position) {
@@ -21,9 +20,8 @@ public abstract class AbstractWorldMap {
         if (foundObject  == null) {
             return plants.get(position);
         }
-        return  foundObject ;
+        return foundObject;
     }
-
 
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;

@@ -11,65 +11,41 @@ public enum MapDirection {
     NORTHWEST;
 
     public String toString() {
-        switch (this) {
-            case NORTH -> {return "N";}
-
-            case NORTHEAST -> {return "NE";}
-
-            case EAST -> {return "E";}
-
-            case SOUTHEAST -> {return "SE";}
-
-            case SOUTH -> {return "S";}
-
-            case SOUTHWEST -> {return "SW";}
-
-            case WEST -> {return "W";}
-
-            case NORTHWEST -> {return "NW";}
-        }
-        return null;
+        return switch (this) {
+            case NORTH -> "N";
+            case NORTHEAST -> "NE";
+            case EAST -> "E";
+            case SOUTHEAST -> "SE";
+            case SOUTH -> "S";
+            case SOUTHWEST -> "SW";
+            case WEST -> "W";
+            case NORTHWEST -> "NW";
+        };
     }
 
     public Vector2d toUnitVector() {
-        switch (this) {
-            case NORTH -> {return new Vector2d(0, 1);}
-
-            case NORTHEAST -> {return new Vector2d(1,1);}
-
-            case EAST -> {return new Vector2d(1, 0);}
-
-            case SOUTHEAST -> {return new Vector2d(1,-1);}
-
-            case SOUTH -> {return new Vector2d(0, -1);}
-
-            case SOUTHWEST -> {return new Vector2d(-1,-1);}
-
-            case WEST -> {return new Vector2d(-1, 0);}
-
-            case NORTHWEST -> {return new Vector2d(-1,1);}
-        }
-        return null;
+        return switch (this) {
+            case NORTH -> new Vector2d(0, 1);
+            case NORTHEAST -> new Vector2d(1,1);
+            case EAST -> new Vector2d(1, 0);
+            case SOUTHEAST -> new Vector2d(1,-1);
+            case SOUTH -> new Vector2d(0, -1);
+            case SOUTHWEST -> new Vector2d(-1,-1);
+            case WEST -> new Vector2d(-1, 0);
+            case NORTHWEST -> new Vector2d(-1,1);
+        };
     }
 
     public MapDirection next() {
-        switch (this) {
-            case NORTH -> {return MapDirection.NORTHEAST;}
-
-            case NORTHEAST -> {return MapDirection.EAST;}
-
-            case EAST -> {return MapDirection.SOUTHEAST;}
-
-            case SOUTHEAST -> {return MapDirection.SOUTH;}
-
-            case SOUTH -> {return MapDirection.SOUTHWEST;}
-
-            case SOUTHWEST -> {return MapDirection.WEST;}
-
-            case WEST -> {return MapDirection.NORTHWEST;}
-
-            case NORTHWEST -> {return MapDirection.NORTH;}
-        }
-        return null;
+        return switch (this) {
+            case NORTH -> MapDirection.NORTHEAST;
+            case NORTHEAST -> MapDirection.EAST;
+            case EAST -> MapDirection.SOUTHEAST;
+            case SOUTHEAST -> MapDirection.SOUTH;
+            case SOUTH -> MapDirection.SOUTHWEST;
+            case SOUTHWEST -> MapDirection.WEST;
+            case WEST -> MapDirection.NORTHWEST;
+            case NORTHWEST -> MapDirection.NORTH;
+        };
     }
 }
