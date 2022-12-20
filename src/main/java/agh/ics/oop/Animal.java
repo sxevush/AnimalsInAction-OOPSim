@@ -1,7 +1,6 @@
 package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.Arrays;
-import static java.lang.Math.random;
 import java.util.List;
 
 public class Animal {
