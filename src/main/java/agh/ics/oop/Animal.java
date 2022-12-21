@@ -9,7 +9,6 @@ public class Animal {
     private Vector2d position;
 
 
-
     private int energy;
     private int age = 0; //licznik tur, które przeżyło zwierzę, a w praktyce pointer na aktualny gen
     private int genotypeSize;
@@ -19,8 +18,15 @@ public class Animal {
         this.map = map;
         this.position = startingPosition;
         this.genotypeSize = genotypeSize;
-
         List<Integer> genList = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
+    }
+
+    public void setPosition(Vector2d position) {
+        this.position = position;
+    }
+
+    public void setOrientation(MapDirection orientation) {
+        this.orientation = orientation;
     }
 
     public Animal(Animal parent1, Animal parent2){
@@ -29,6 +35,7 @@ public class Animal {
 
     public void move(MapDirection direction){
 
+        map.checkBoundaries(this);
     }
 
     public boolean isAt(Vector2d position) {
@@ -37,5 +44,7 @@ public class Animal {
     public Vector2d getPosition(){
         return this.position;
     }
-
+    public MapDirection getOrientation() {
+        return orientation;
+    }
 }
