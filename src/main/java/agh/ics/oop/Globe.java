@@ -11,7 +11,6 @@ public class Globe extends AbstractWorldMap {
         Vector2d position = animal.getPosition();
         MapDirection orientation = animal.getOrientation();
 
-
         if (position.x() < 0) {
             animal.setPosition(new Vector2d(0, position.y()));
         } else if (position.x() >= width) {
@@ -23,7 +22,6 @@ public class Globe extends AbstractWorldMap {
             animal.setPosition(new Vector2d(position.x(), height - 1));
             animal.setOrientation(oppositeDirection(orientation));
         }
-        System.out.println(orientation);
     }
 
     private static MapDirection oppositeDirection(MapDirection orientation) {

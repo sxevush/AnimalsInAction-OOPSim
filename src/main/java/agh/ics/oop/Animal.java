@@ -10,14 +10,15 @@ public class Animal {
 
 
     private int energy;
-    private int age = 0; //licznik tur, które przeżyło zwierzę, a w praktyce pointer na aktualny gen
-    private int genotypeSize;
-    private List<Integer> genotype = new ArrayList<>();
+    private int age = 0; //licznik tur, które przeżyło zwierzę
+    private Genotype genotype;
 
     public Animal(AbstractWorldMap map, Vector2d startingPosition){
         this.map = map;
-        this.position = startingPosition;
-        List<Integer> genList = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
+        position = startingPosition;
+        genotype = new Genotype();
+
+
     }
 
     public void setPosition(Vector2d position) {
@@ -27,24 +28,26 @@ public class Animal {
     public void setOrientation(MapDirection orientation) { this.orientation = orientation; }
 
     public Animal(Animal parent1, Animal parent2){
-        this.genotypeSize = parent1.genotype.size();
+
     }
 
     public void move(int direction){
         // do testu mapy - bedzie zmienione
         Vector2d oldPosition = position;
-        if (direction == 0) {
-            Vector2d unitVector = MapDirection.NORTH.toUnitVector();
-            position = position.add(unitVector);
-            System.out.println(position);
+        Integer turn = this.genotype.next();
+        System.out.println(turn);
+        for(int i=0; i<turn; i++){
+            orientation = orientation.next();
         }
+
+        position = position.add(orientation.toUnitVector());
         map.checkBoundaries(this);
-        positionChanged(oldPosition, position);
+        positionChanged(oldPosition, position); // TODO OBSERVER
     }
 
     @Override
     public String toString() {
-        return "$";
+        return this.orientation.toString();//TODO zmienic dla kilku
     }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
