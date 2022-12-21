@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractWorldMap {
-    private final int width;
-    private final int height;
+    protected final int width;
+    protected final int height;
 
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
     protected final Map<Vector2d, Animal> plants = new HashMap<>();
@@ -31,4 +31,9 @@ public abstract class AbstractWorldMap {
     }
 
     public abstract void checkBoundaries(Animal animal);
+
+    public String toString() {
+        MapVisualizer drawing = new MapVisualizer(this);
+        return drawing.draw(new Vector2d(0, 0), new Vector2d(width - 1, height - 1));
+    }
 }

@@ -4,9 +4,6 @@ import java.util.Random;
 
 public class Hell extends AbstractWorldMap {
 
-    private int width;
-    private int height;
-
     protected Hell(int width, int height) {
         super(width, height);
     }
@@ -14,6 +11,7 @@ public class Hell extends AbstractWorldMap {
     @Override
     public void checkBoundaries(Animal animal) {
         Random rand = new Random();
+        System.out.println(width);
         int randomX = rand.nextInt(width);
         int randomY = rand.nextInt(height);
         Vector2d position = animal.getPosition();

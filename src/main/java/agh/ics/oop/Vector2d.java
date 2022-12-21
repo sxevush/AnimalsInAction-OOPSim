@@ -35,12 +35,6 @@ public record Vector2d(int x, int y) {
     }
 
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vector2d vector2d = (Vector2d) o;
-        return x == vector2d.x && y == vector2d.y;
-    }
 
     public static void main(String[] args) {
         Vector2d position1 = new Vector2d(1, 2);
