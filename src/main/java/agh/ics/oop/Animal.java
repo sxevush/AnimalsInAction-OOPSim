@@ -1,7 +1,4 @@
 package agh.ics.oop;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Animal {
     private MapDirection orientation = MapDirection.NORTH; // TODO poczatkowy kierunek
@@ -17,8 +14,6 @@ public class Animal {
         this.map = map;
         position = startingPosition;
         genotype = new Genotype();
-
-
     }
 
     public void setPosition(Vector2d position) {
@@ -31,18 +26,18 @@ public class Animal {
 
     }
 
-    public void move(int direction){
-        // do testu mapy - bedzie zmienione
+    public void move() {
+        // TODO do testu mapy - bedzie zmienione
         Vector2d oldPosition = position;
         Integer turn = this.genotype.next();
-        System.out.println(turn);
-        for(int i=0; i<turn; i++){
+
+        for (int i = 0 ; i < turn ; i++) {
             orientation = orientation.next();
         }
 
-        position = position.add(orientation.toUnitVector());
-        map.checkBoundaries(this);
-        positionChanged(oldPosition, position); // TODO OBSERVER
+        position = position.add( orientation.toUnitVector() );
+        map.checkBoundaries( this );
+        positionChanged( oldPosition, position ); // TODO OBSERVER
     }
 
     @Override

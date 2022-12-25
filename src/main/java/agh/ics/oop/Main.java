@@ -6,9 +6,10 @@ public class Main {
         AbstractWorldMap map = new Globe(10, 15);
         Animal Pysiu = new Animal(map, new Vector2d(2, 2));
         map.place(Pysiu);
-        for (int i = 0; i < 5; i++) {
-            Pysiu.move(0);
 
+
+        for (int i = 0; i < 10; i++) {
+            Pysiu.move();
         }
         System.out.print(map);
     }

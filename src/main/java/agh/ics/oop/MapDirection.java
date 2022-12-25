@@ -48,4 +48,17 @@ public enum MapDirection {
             case NORTHWEST -> MapDirection.NORTH;
         };
     }
+
+    public MapDirection previous() {
+        return switch (this) {
+            case NORTH -> MapDirection.NORTHWEST;
+            case NORTHEAST -> MapDirection.NORTH;
+            case EAST -> MapDirection.NORTHEAST;
+            case SOUTHEAST -> MapDirection.EAST;
+            case SOUTH -> MapDirection.SOUTHEAST;
+            case SOUTHWEST -> MapDirection.SOUTH;
+            case WEST -> MapDirection.SOUTHWEST;
+            case NORTHWEST -> MapDirection.WEST;
+        };
+    }
 }
