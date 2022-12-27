@@ -8,7 +8,7 @@ public abstract class AbstractWorldMap {
     protected final int height;
 
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
-    protected final Map<Vector2d, Animal> plants = new HashMap<>();
+    protected final Map<Vector2d, Plant> plants = new HashMap<>();
 
     protected AbstractWorldMap(int width, int height) {
         this.width = width;

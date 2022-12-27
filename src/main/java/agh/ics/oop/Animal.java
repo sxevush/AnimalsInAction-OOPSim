@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Random;
+
 public class Animal {
     private MapDirection orientation = MapDirection.NORTH; // TODO poczatkowy kierunek
     private AbstractWorldMap map;
@@ -16,15 +18,25 @@ public class Animal {
         genotype = new Genotype();
     }
 
+    public Animal(Animal parent1, Animal parent2){
+        this.map = parent1.map;
+        this.position = parent1.position;
+        this.genotype = new Genotype(parent1, parent2);
+
+        //wylosowanie startowej orientacji
+        Random rand = new Random();
+        int turn = rand.nextInt(8);
+        for (int i = 0 ; i < turn ; i++) {
+            orientation = orientation.next();
+        }
+
+    }
     public void setPosition(Vector2d position) {
         this.position = position;
     }
 
     public void setOrientation(MapDirection orientation) { this.orientation = orientation; }
 
-    public Animal(Animal parent1, Animal parent2){
-
-    }
 
     public void move() {
         // TODO do testu mapy - bedzie zmienione
@@ -58,5 +70,13 @@ public class Animal {
     }
     public MapDirection getOrientation() {
         return orientation;
+    }
+
+    public int getEnergy(){
+        return energy;
+    }
+
+    public Genotype getGenotype(){
+        return genotype;
     }
 }

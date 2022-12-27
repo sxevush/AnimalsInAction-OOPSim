@@ -7,7 +7,7 @@ public class SimulationEngine {
 
     private final Vector2d[] positions;
     private final AbstractWorldMap map;
-    private final List<Animal> listAnimals = new ArrayList<>();
+    private WorldMapElements elements;
     private int worldAge = 10;
 
     public void setWorldAge(int worldAge) {
@@ -17,17 +17,17 @@ public class SimulationEngine {
     public SimulationEngine(AbstractWorldMap map, Vector2d[] positions) {
         this.map = map;
         this.positions = positions;
+        this.elements = new WorldMapElements(map);
         for (Vector2d position : positions) {
             Animal animal = new Animal(map, position);
-            // TODO place
-            listAnimals.add(animal);
+            elements.addAnimal(animal);
             map.place(animal);
         }
     }
 
     public void run() {
         for (int i = 0; i < worldAge; i++) {
-            for (Animal listAnimal : listAnimals) listAnimal.move();
+            elements.go();
         }
     }
 }

@@ -23,13 +23,44 @@ public class Genotype {
     public Genotype() {
         Random rand = new Random();
 
-        createGenotype( rand, genotypeSize );
+        newGenotype( rand, genotypeSize );
         System.out.println(genotype);
         mutate( rand );
         System.out.println(genotype);
     }
 
-    private void createGenotype(Random rand, int genotypeSize) {
+    public Genotype(Animal parent1, Animal parent2){
+        int change= (int) parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy());
+
+        double probability = Math.random();
+        Genotype genotype1 = parent1.getGenotype();
+        Genotype genotype2 = parent2.getGenotype();
+        //losowy wybór kolejności w jakiej wybieramy fragmenty genów rodziców
+        if(probability>0.5){
+            genotype1 = parent2.getGenotype();
+            genotype2 = parent1.getGenotype();
+            change = genotypeSize - change; //jeśli zmieniamy kolejność rodziców, wtedy drugi rodzic przekazuje swoje pierwsze geny, dlatego zmieniamy wartość zmiennej change
+
+        }
+        //pierwszy fragment - od zera do change
+        for(int i = 0; i<change; i++){
+            int gen = genotype1.genotype.get(i);
+            this.genotype.add(gen);
+        }
+        //drugi fragment - od change do końca
+        for(int i = change; i<genotypeSize; i++){
+            int gen = genotype2.genotype.get(i);
+            this.genotype.add(gen);
+        }
+
+        Random rand = new Random();
+        this.pointer = rand.nextInt(genotypeSize);
+
+        mutate( rand );
+
+    }
+
+    private void newGenotype(Random rand, int genotypeSize) {
         for (int i = 0 ; i < genotypeSize ; i++) {
             int gen = rand.nextInt(8);
             this.genotype.add(gen);
