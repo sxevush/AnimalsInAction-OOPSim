@@ -11,7 +11,6 @@ public class Hell extends AbstractWorldMap {
     @Override
     public void checkBoundaries(Animal animal) {
         Random rand = new Random();
-        System.out.println(width);
         int randomX = rand.nextInt(width);
         int randomY = rand.nextInt(height);
         Vector2d position = animal.getPosition();

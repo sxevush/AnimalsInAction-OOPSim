@@ -53,13 +53,20 @@ public class Animal {
 
         position = position.add( orientation.toUnitVector() );
         map.checkBoundaries( this );
-        positionChanged( oldPosition, position ); // TODO OBSERVER
+        positionChanged( oldPosition ); // TODO OBSERVER
 
         energy--;
+        age++;
+
+        if (energy == 0) {
+            dieAnimal( this );
+        }
+
+        // TODO usuwanie martwych zwierzat
     }
 
-    public void modifyEnergy(int energy){
-        this.energy += energy; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
+    public void modifyEnergy(int ener){
+        this.energy += ener; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
     }
 
     @Override
@@ -67,10 +74,23 @@ public class Animal {
         return this.orientation.toString();//TODO zmienic dla kilku
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    public void positionChanged(Vector2d oldPosition) {
         map.fields.remove(oldPosition);
         map.place(this);
     }
+
+    public void dieAnimal (Animal animal) {
+        Vector2d position = animal.getPosition();
+        map.fields.get(position).removeAnimal( this );
+    }
+
+    public void eat(Animal animal) {
+        Vector2d position = animal.getPosition();
+        if (map.fields.get( position ) != null) {
+            map.fields.get( position ).eat();
+        }
+    }
+
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
@@ -86,5 +106,12 @@ public class Animal {
     public int getAge(){ return age;}
     public Genotype getGenotype(){
         return genotype;
+    }
+
+    public void breed(Animal animal) {
+        Vector2d position = animal.getPosition();
+        if (map.fields.get( position ) != null) {
+            map.fields.get( position ).breed();
+        }
     }
 }
