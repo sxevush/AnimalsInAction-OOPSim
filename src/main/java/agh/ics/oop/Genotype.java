@@ -30,7 +30,7 @@ public class Genotype {
     }
 
     public Genotype(Animal parent1, Animal parent2){
-        int change= (int) parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy());
+        int change = (int) parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize;
 
         double probability = Math.random();
         Genotype genotype1 = parent1.getGenotype();

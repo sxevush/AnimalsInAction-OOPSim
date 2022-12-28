@@ -7,23 +7,32 @@ public abstract class AbstractWorldMap {
     protected final int width;
     protected final int height;
 
-    protected final Map<Vector2d, Animal> animals = new HashMap<>();
-    protected final Map<Vector2d, Plant> plants = new HashMap<>();
+    protected final Map<Vector2d, Field> fields = new HashMap<>();
 
     protected AbstractWorldMap(int width, int height) {
         this.width = width;
         this.height = height;
     }
     public void place(Animal animal) {
-        animals.put(animal.getPosition(), animal);
-    }
-
-    public Object objectAt(Vector2d position) {
-        Object foundObject = animals.get(position);
-        if (foundObject  == null) {
-            return plants.get(position);
+        Vector2d position = animal.getPosition();
+        if(objectAt(position) == null) {
+            Field field = new Field();
+            field.addAnimal(animal);
+            fields.put(position, field);
         }
-        return foundObject;
+        else{
+            fields.get(position).addAnimal(animal);
+        }
+    }
+    public void remove(Animal animal){
+        Vector2d position = animal.getPosition();
+        fields.get(position).removeAnimal(animal);
+        if(fields.get(position).isEmpty()) {
+            fields.remove(position);
+        }
+    }
+    public Object objectAt(Vector2d position) {
+        return fields.get(position);
     }
 
     public boolean isOccupied(Vector2d position) {

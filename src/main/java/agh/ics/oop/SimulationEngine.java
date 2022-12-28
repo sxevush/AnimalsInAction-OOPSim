@@ -27,7 +27,7 @@ public class SimulationEngine {
 
     public void run() {
         for (int i = 0; i < worldAge; i++) {
-            elements.go();
+            elements.move();
         }
     }
 }

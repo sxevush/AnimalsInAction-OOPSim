@@ -12,17 +12,21 @@ public class Animal {
     private int age = 0; //licznik tur, które przeżyło zwierzę
     private Genotype genotype;
 
+
+    public final int startingEnergy = 10; //TODO ustawić setter czy cos takiego bo to brzydkie
+
     public Animal(AbstractWorldMap map, Vector2d startingPosition){
         this.map = map;
         position = startingPosition;
         genotype = new Genotype();
+        energy = startingEnergy;
     }
 
     public Animal(Animal parent1, Animal parent2){
         this.map = parent1.map;
         this.position = parent1.position;
         this.genotype = new Genotype(parent1, parent2);
-
+        this.energy = startingEnergy;
         //wylosowanie startowej orientacji
         Random rand = new Random();
         int turn = rand.nextInt(8);
@@ -50,6 +54,12 @@ public class Animal {
         position = position.add( orientation.toUnitVector() );
         map.checkBoundaries( this );
         positionChanged( oldPosition, position ); // TODO OBSERVER
+
+        energy--;
+    }
+
+    public void modifyEnergy(int energy){
+        this.energy += energy; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
     }
 
     @Override
@@ -58,10 +68,9 @@ public class Animal {
     }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        map.animals.remove(oldPosition);
-        map.animals.put(newPosition, this);
+        map.fields.remove(oldPosition);
+        map.place(this);
     }
-
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
@@ -71,11 +80,10 @@ public class Animal {
     public MapDirection getOrientation() {
         return orientation;
     }
-
     public int getEnergy(){
         return energy;
     }
-
+    public int getAge(){ return age;}
     public Genotype getGenotype(){
         return genotype;
     }
