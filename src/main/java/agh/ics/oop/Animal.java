@@ -1,9 +1,11 @@
 package agh.ics.oop;
 
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Animal {
-    private MapDirection orientation = MapDirection.NORTH; // TODO poczatkowy kierunek
+    Random random = new Random();
+    private MapDirection orientation = MapDirection.values()[random.nextInt(MapDirection.values().length)];
     private AbstractWorldMap map;
     private Vector2d position;
 
@@ -13,19 +15,19 @@ public class Animal {
     private Genotype genotype;
 
 
-    public final int startingEnergy = 10; //TODO ustawić setter czy cos takiego bo to brzydkie
 
-    public Animal(AbstractWorldMap map, Vector2d startingPosition){
+
+    public Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy){
         this.map = map;
-        position = startingPosition;
-        genotype = new Genotype();
-        energy = startingEnergy;
+        this.position = startingPosition;
+        this.genotype = new Genotype(map.getGenotypeSize(), map.getNumberOfMutations() );
+        this.energy = startingEnergy;
     }
 
-    public Animal(Animal parent1, Animal parent2){
+    public Animal(Animal parent1, Animal parent2, int startingEnergy){
         this.map = parent1.map;
         this.position = parent1.position;
-        this.genotype = new Genotype(parent1, parent2);
+        this.genotype = new Genotype(parent1, parent2, map.getGenotypeSize(), map.getNumberOfMutations());
         this.energy = startingEnergy;
         //wylosowanie startowej orientacji
         Random rand = new Random();
@@ -43,7 +45,6 @@ public class Animal {
 
 
     public void move() {
-        // TODO do testu mapy - bedzie zmienione
         Vector2d oldPosition = position;
         Integer turn = this.genotype.next();
 
@@ -53,7 +54,7 @@ public class Animal {
 
         position = position.add( orientation.toUnitVector() );
         map.checkBoundaries( this );
-        positionChanged( oldPosition ); // TODO OBSERVER
+        positionChanged( oldPosition, this ); // TODO OBSERVER
 
         energy--;
         age++;
@@ -62,20 +63,22 @@ public class Animal {
             dieAnimal( this );
         }
 
-        // TODO usuwanie martwych zwierzat
     }
 
     public void modifyEnergy(int ener){
         this.energy += ener; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
     }
 
-    @Override
-    public String toString() {
-        return this.orientation.toString();//TODO zmienic dla kilku
-    }
+//    @Override
+//    public String toString() {
+//        return this.orientation.toString();
+//    }
 
-    public void positionChanged(Vector2d oldPosition) {
-        map.fields.remove(oldPosition);
+    public void positionChanged(Vector2d oldPosition, Animal animal) {
+        PriorityQueue<Animal> animals = map.fields.get( oldPosition ).getAnimals();
+        if (animals.remove(animal)) {
+            map.fields.get( oldPosition ).setAnimals( animals );
+        }
         map.place(this);
     }
 
@@ -110,8 +113,6 @@ public class Animal {
 
     public void breed(Animal animal) {
         Vector2d position = animal.getPosition();
-        if (map.fields.get( position ) != null) {
-            map.fields.get( position ).breed();
-        }
+        map.fields.get( position ).breed();
     }
 }

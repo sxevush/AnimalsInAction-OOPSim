@@ -9,8 +9,9 @@ public class Genotype {
     private List<Integer> genotype = new ArrayList<>();
     private int pointer = 0;
     private HashSet<Integer> mutations = new HashSet<>(); // pozwala na niepowtarzajace sie elementy
-    private int numberOfMutations = 2;
-    private int genotypeSize = 10; //TODO setter w aplikacji
+    int genotypeSize;
+    int numberOfMutations;
+
 
     public void setNumberOfMutations(int numberOfMutations) {
         this.numberOfMutations = numberOfMutations;
@@ -20,17 +21,18 @@ public class Genotype {
         this.genotypeSize = genotypeSize;
     }
 
-    public Genotype() {
+    public Genotype(int genotypeSize, int numberOfMutations) {
         Random rand = new Random();
-
         newGenotype( rand, genotypeSize );
         System.out.println(genotype);
         mutate( rand );
         System.out.println(genotype);
+        this.genotypeSize = genotypeSize;
+        this.numberOfMutations = numberOfMutations;
     }
 
-    public Genotype(Animal parent1, Animal parent2){
-        int change = (int) parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize;
+    public Genotype(Animal parent1, Animal parent2, int genotypeSize, int numberOfMutations){
+        int change = parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize; //todo sprawdzic czy dziala change w genotype
 
         double probability = Math.random();
         Genotype genotype1 = parent1.getGenotype();
@@ -62,7 +64,7 @@ public class Genotype {
 
     private void newGenotype(Random rand, int genotypeSize) {
         for (int i = 0 ; i < genotypeSize ; i++) {
-            int gen = rand.nextInt(8);
+            int gen = rand.nextInt(8); // 8 - liczba kierunkow
             this.genotype.add(gen);
         }
     }
@@ -78,8 +80,12 @@ public class Genotype {
             double probability = Math.random();
             if (probability > 0.5) {
                 genotype.set(mutation, gen + 1);
-            } else {
-                genotype.set(mutation, gen - 1);
+            } else { // todo mozna by to ulatwic - moze jakos uzyc previous? tylko to jest na liczbach a tam na enum
+                if (gen - 1 >= 0) {
+                    genotype.set(mutation, gen - 1);
+                } else {
+                    genotype.set(mutation, 7);
+                }
             }
         }
     }

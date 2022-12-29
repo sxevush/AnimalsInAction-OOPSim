@@ -1,33 +1,29 @@
 package agh.ics.oop;
 
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 public class SimulationEngine {
 
-    private WorldMapElements elements;
-    private AbstractWorldMap map;
+    private final WorldMapElements elements;
+    private final AbstractWorldMap map;
     private int worldAge = 10;
     protected int numberOfAnimals = 5;
     private int numberOfPlants = 20;
-    private int plantEnergy = 5;
-    private HashSet<Vector2d> initialAnimalPositions = new HashSet<>();
-    private HashSet<Vector2d> initialPlantPositions = new HashSet<>();
+
+    private final ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
+    private final HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
 
     public void setWorldAge(int worldAge) {
         this.worldAge = worldAge;
     }
 
     public void setNumberOfAnimals(int numberOfAnimals) {
-        this.numberOfAnimals = numberOfAnimals;
+        this.numberOfAnimals = numberOfAnimals; //todo wyjatek zeby nie bylo wiecej niz sie da
     }
 
-    public void setPlantEnergy(int plantEnergy) {
-        this.plantEnergy = plantEnergy;
-    }
 
     public void setNumberOfPlants(int numberOfPlants) {
-        this.numberOfPlants = numberOfPlants;
+        this.numberOfPlants = numberOfPlants; //todo wyjatek zeby nie bylo wiecej niz sie da
     }
 
     public SimulationEngine(AbstractWorldMap map) {
@@ -35,11 +31,11 @@ public class SimulationEngine {
         this.elements = new WorldMapElements(map);
     }
 
-    private void randomizePositions(AbstractWorldMap map, HashSet<Vector2d> positions, int numberOfElements) {
+    private void randomizePositions(AbstractWorldMap map, Collection<Vector2d> positions, int numberOfElements) {
         Random rand = new Random();
         while (positions.size() < numberOfElements) {
             int randomX = rand.nextInt( map.width);
-            int randomY = rand.nextInt( map.width);
+            int randomY = rand.nextInt( map.height);
             positions.add(new Vector2d( randomX, randomY ));
         }
     }
@@ -47,20 +43,19 @@ public class SimulationEngine {
     private void placeAnimals(AbstractWorldMap map) {
         randomizePositions( map, initialAnimalPositions, numberOfAnimals );
         for (Vector2d position : initialAnimalPositions) {
-            Animal animal = new Animal( map, position);
+            Animal animal = new Animal( map, position, map.getStartingAnimalEnergy());
             elements.addAnimal(animal);
             map.place(animal);
         }
     }
 
-    private void placePlants(AbstractWorldMap map) {
+    private void placePlants(AbstractWorldMap map) { // moze mozna dac do AbstractWorldMap?
         randomizePositions( map, initialPlantPositions, numberOfPlants );
         System.out.println( numberOfPlants);
         for (Vector2d position : initialPlantPositions) {
-            map.placePlant( plantEnergy, position );
+            map.placePlant( map.getPlantEnergy(), position );
         }
     }
-
 
 
     public void run() {
@@ -70,7 +65,13 @@ public class SimulationEngine {
             elements.cleanMap();
             elements.move();
             elements.everyoneEat();
-            elements.letsBreed(); //todo nie dziala
+            elements.letsBreed();
+            for (Animal animal : map.getParentsAfterBreeding()) {
+                elements.addAnimal(animal);
+                map.place(animal);
+            }
+            map.setParentsAfterBreeding( new ArrayList<>() ); // todo brzydkie w chuj - zmienic
+            map.addNewPlants();
         }
     }
 }

@@ -16,7 +16,6 @@ public class Hell extends AbstractWorldMap {
         Vector2d position = animal.getPosition();
         if ((position.x() < 0) || (position.x() >= width) || (position.y() < 0) || (position.y() >= height)) {
             animal.setPosition(new Vector2d(randomX, randomY));
-            //TODO wziac pod uwage zmiane wartosci energii!!
         }
     }
 }

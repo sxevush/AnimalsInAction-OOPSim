@@ -30,12 +30,12 @@ public class WorldMapElements {
     }
 
     public void cleanMap() {
-        animals.removeIf( animal -> animal.getEnergy() == 0 );
         for (Animal animal : animals) {
             if (animal.getEnergy() == 0) {
                 map.remove( animal );
             }
         }
+        animals.removeIf( animal -> animal.getEnergy() == 0 );
     }
 
     public void letsBreed() {
@@ -43,4 +43,6 @@ public class WorldMapElements {
             animal.breed( animal );
         }
     }
+
+
 }
