@@ -128,7 +128,7 @@ public abstract class AbstractWorldMap {
     }
 
     public String getImagePath(Vector2d position){
-        if(!this.isOccupied(position)){
+        if(!this.isOccupied(position) || this.fields.get(position).isEmpty()){
             return "src/main/resources/empty.png";
         }
         return fields.get(position).getImagePath();

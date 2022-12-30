@@ -47,7 +47,7 @@ public class App extends Application {
                 engine.setMoveDelay(this.moveDelay);
                 engine.setNumberOfPlants( 10 ); // todo wyjatki dla za duzych/ujemnych wartosci
                 engine.setWorldAge( 100 );
-                engine.setNumberOfAnimals( 1 );
+                engine.setNumberOfAnimals( 10 );
                 map.setNewPlants( 5 );
                 map.setPlantEnergy( 5 );
                 map.setStartingAnimalEnergy( 20 );
