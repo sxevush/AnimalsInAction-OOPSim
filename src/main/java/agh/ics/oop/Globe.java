@@ -2,7 +2,7 @@ package agh.ics.oop;
 
 public class Globe extends AbstractWorldMap {
 
-    protected Globe(int width, int height) {
+    public Globe(int width, int height) {
         super(width, height);
     }
 

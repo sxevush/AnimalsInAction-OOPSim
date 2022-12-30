@@ -126,4 +126,19 @@ public abstract class AbstractWorldMap {
     public void setGenotypeSize(int genotypeSize) {
         this.genotypeSize = genotypeSize;
     }
+
+    public String getImagePath(Vector2d position){
+        if(!this.isOccupied(position)){
+            return "src/main/resources/empty.png";
+        }
+        return fields.get(position).getImagePath();
+    }
+
+    public int getWidth(){
+        return width;
+    }
+    public int getHeight(){
+        return height;
+    }
+
 }

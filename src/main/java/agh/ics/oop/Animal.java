@@ -1,13 +1,16 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-public class Animal {
+public class Animal implements IPositionChangeObserver {
     Random random = new Random();
     private MapDirection orientation = MapDirection.values()[random.nextInt(MapDirection.values().length)];
-    private AbstractWorldMap map;
     private Vector2d position;
+    private AbstractWorldMap map;
+    private List<IPositionChangeObserver> observers = new ArrayList<>();
 
 
     private int energy;
@@ -15,16 +18,14 @@ public class Animal {
     private Genotype genotype;
 
 
-
-
-    public Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy){
+    public Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy) {
         this.map = map;
         this.position = startingPosition;
-        this.genotype = new Genotype(map.getGenotypeSize(), map.getNumberOfMutations() );
+        this.genotype = new Genotype(map.getGenotypeSize(), map.getNumberOfMutations());
         this.energy = startingEnergy;
     }
 
-    public Animal(Animal parent1, Animal parent2, int startingEnergy){
+    public Animal(Animal parent1, Animal parent2, int startingEnergy) {
         this.map = parent1.map;
         this.position = parent1.position;
         this.genotype = new Genotype(parent1, parent2, map.getGenotypeSize(), map.getNumberOfMutations());
@@ -32,40 +33,43 @@ public class Animal {
         //wylosowanie startowej orientacji
         Random rand = new Random();
         int turn = rand.nextInt(8);
-        for (int i = 0 ; i < turn ; i++) {
+        for (int i = 0; i < turn; i++) {
             orientation = orientation.next();
         }
 
     }
+
     public void setPosition(Vector2d position) {
         this.position = position;
     }
 
-    public void setOrientation(MapDirection orientation) { this.orientation = orientation; }
+    public void setOrientation(MapDirection orientation) {
+        this.orientation = orientation;
+    }
 
 
     public void move() {
         Vector2d oldPosition = position;
         Integer turn = this.genotype.next();
 
-        for (int i = 0 ; i < turn ; i++) {
+        for (int i = 0; i < turn; i++) {
             orientation = orientation.next();
         }
 
-        position = position.add( orientation.toUnitVector() );
-        map.checkBoundaries( this );
-        positionChanged( oldPosition, this ); // TODO OBSERVER
+        position = position.add(orientation.toUnitVector());
+        map.checkBoundaries(this);
+        positionChanged(oldPosition, this); // TODO OBSERVER
 
         energy--;
         age++;
 
         if (energy == 0) {
-            dieAnimal( this );
+            dieAnimal(this);
         }
 
     }
 
-    public void modifyEnergy(int ener){
+    public void modifyEnergy(int ener) {
         this.energy += ener; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
     }
 
@@ -75,44 +79,51 @@ public class Animal {
 //    }
 
     public void positionChanged(Vector2d oldPosition, Animal animal) {
-        PriorityQueue<Animal> animals = map.fields.get( oldPosition ).getAnimals();
+        PriorityQueue<Animal> animals = map.fields.get(oldPosition).getAnimals();
         if (animals.remove(animal)) {
-            map.fields.get( oldPosition ).setAnimals( animals );
+            map.fields.get(oldPosition).setAnimals(animals);
         }
         map.place(this);
     }
 
-    public void dieAnimal (Animal animal) {
+    public void dieAnimal(Animal animal) {
         Vector2d position = animal.getPosition();
-        map.fields.get(position).removeAnimal( this );
+        map.fields.get(position).removeAnimal(this);
     }
 
     public void eat(Animal animal) {
         Vector2d position = animal.getPosition();
-        if (map.fields.get( position ) != null) {
-            map.fields.get( position ).eat();
+        if (map.fields.get(position) != null) {
+            map.fields.get(position).eat();
         }
     }
 
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
-    public Vector2d getPosition(){
+
+    public Vector2d getPosition() {
         return this.position;
     }
+
     public MapDirection getOrientation() {
         return orientation;
     }
-    public int getEnergy(){
+
+    public int getEnergy() {
         return energy;
     }
-    public int getAge(){ return age;}
-    public Genotype getGenotype(){
+
+    public int getAge() {
+        return age;
+    }
+
+    public Genotype getGenotype() {
         return genotype;
     }
 
     public void breed(Animal animal) {
         Vector2d position = animal.getPosition();
-        map.fields.get( position ).breed();
+        map.fields.get(position).breed();
     }
 }

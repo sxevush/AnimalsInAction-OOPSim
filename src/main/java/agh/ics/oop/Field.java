@@ -99,5 +99,14 @@ public class Field {
     public void setPosition(Vector2d position) {
         this.position = position;
     }
+
+    public String getImagePath(){
+        if(animals.size() > 0){
+            return "src/main/resources/animal.png";
+        }
+        return "src/main/resources/plant.png";
+    }
+
+
 }
 
