@@ -3,7 +3,9 @@ package agh.ics.oop;
 import java.util.*;
 
 public class Field {
-    private int babyStartingEnergy = 5;
+    private int energyToBreed = 5; //todo setter energyToBreed
+    private int stuffedAnimal = 5; //todo wieksze od energyToBreed
+    //todo setter stuffedAnimal
     protected Comparator<Animal> animalComparator = (a1, a2) -> {
         if (a1.getEnergy() == a2.getEnergy()) {
             return a1.getAge() - a2.getAge();
@@ -12,9 +14,8 @@ public class Field {
     };
     private PriorityQueue<Animal> animals = new PriorityQueue<>( animalComparator );
     protected int plant;
-    Random rand = new Random();
     private int numberOfDiedAnimals = 0;
-    private final AbstractWorldMap map;
+    private AbstractWorldMap map;
     private Vector2d position;
 
     public Field (AbstractWorldMap map) {
@@ -25,8 +26,12 @@ public class Field {
         return numberOfDiedAnimals;
     }
 
-    public void setBabyStartingEnergy(int babyStartingEnergy) {
-        this.babyStartingEnergy = babyStartingEnergy;
+    public void setEnergyToBreed(int energyToBreed) {
+        this.energyToBreed = energyToBreed;
+    }
+
+    public void setStuffedAnimal(int stuffedAnimal) {
+        this.stuffedAnimal = stuffedAnimal;
     }
 
     public void addDiedAnimal () {
@@ -78,26 +83,33 @@ public class Field {
     public ArrayList<Animal> breed() {
         ArrayList<Animal> parentsAfterBreeding = new ArrayList<>();
         ArrayList<Animal> newAnimals = new ArrayList<>();
+
         while (animals.size() >= 2){
+
             Animal parent1 = animals.poll();
             parentsAfterBreeding.add( parent1 );
             Animal parent2 = animals.poll();
             parentsAfterBreeding.add( parent2 );
-//            map.addParentsAfterBreeding( new ArrayList<>(parentsAfterBreeding) );
-            if(Objects.requireNonNull( parent1 ).getEnergy() >= babyStartingEnergy && parent1.getAge() > 0) {
+
+            assert parent1 != null;
+            if (parent1.getEnergy() >= stuffedAnimal && parent1.getAge() > 0) {
+
                 assert parent2 != null;
-                if (parent2.getEnergy() >= babyStartingEnergy && parent2.getAge() > 0) {
-                    Animal newAnimal = new Animal( parent1, parent2, map.getStartingAnimalEnergy()  );
-                    parent1.modifyEnergy( -babyStartingEnergy );
-                    parent2.modifyEnergy( -babyStartingEnergy );
+                if (parent2.getEnergy() >= stuffedAnimal && parent2.getAge() > 0) {
+
+                    Animal newAnimal = new Animal( parent1, parent2, 2 * energyToBreed  );
+                    parent1.modifyEnergy( -energyToBreed );
+                    parent2.modifyEnergy( -energyToBreed );
+
                     this.addAnimal( newAnimal );
                     newAnimals.add( newAnimal );
-                    }
                 }
             }
+            else break;
+        }
         animals.addAll( parentsAfterBreeding );
         return newAnimals;
-        }
+    }
 
     public Vector2d getPosition() {
         return position;
@@ -120,4 +132,3 @@ public class Field {
         return "src/main/resources/plant.png";
     }
 }
-

@@ -63,6 +63,7 @@ public class Animal {
 
     public void modifyEnergy(int ener){
         this.energy += ener; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
+
     }
 
 //    @Override

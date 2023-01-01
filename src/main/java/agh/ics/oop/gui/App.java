@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 
 public class App extends Application {
-    private AbstractWorldMap map = new Globe(10, 15);; //TODO ustawić menu jakies i setter
+    private AbstractWorldMap map = new Globe(10, 10);; //TODO ustawić menu jakies i setter
     private SimulationEngine engine;
     private int fieldSize = 30;
     private int windowHeight = fieldSize * map.getHeight(); //TODO dostosować rozmiar okna do wymiarów mapy pewnie przez jakas funkcje
@@ -23,7 +23,7 @@ public class App extends Application {
 
     private GridPane grid = new GridPane();
     private String title = "Symulacja";
-    private int moveDelay  = 1000;
+    private int moveDelay  = 30;
 
 
     public void start(Stage primaryStage) {
@@ -45,11 +45,11 @@ public class App extends Application {
             try {
                 this.engine = new SimulationEngine(map, this);
                 engine.setMoveDelay(this.moveDelay);
-                engine.setNumberOfPlants( 10 ); // todo wyjatki dla za duzych/ujemnych wartosci
-                engine.setWorldAge( 100 );
+                engine.setNumberOfPlants( 20 ); // todo wyjatki dla za duzych/ujemnych wartosci
+                engine.setWorldAge( 240 );
                 engine.setNumberOfAnimals( 10 );
-                map.setNewPlants( 5 );
-                map.setPlantEnergy( 5 );
+                map.setNewPlants( 7 );
+                map.setPlantEnergy( 3 );
                 map.setStartingAnimalEnergy( 20 );
                 map.setGenotypeSize( 8 );
                 map.setNumberOfMutations( 2 );
@@ -89,7 +89,7 @@ public class App extends Application {
 
         }
         for (int i = 1 ; i <=  map.getHeight(); i++){
-            Label label = new Label(Integer.toString(i + 1));
+            Label label = new Label(Integer.toString(i - 1));
             grid.getRowConstraints().add(new RowConstraints(height));
             grid.add(label, 0,i);
             GridPane.setHalignment(label, HPos.CENTER);
