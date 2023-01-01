@@ -10,6 +10,9 @@ public class WorldMapElements {
     public ArrayList<Animal> getAnimals() {
         return animals;
     }
+    public void addAnimals(ArrayList<Animal> newAnimals) {
+        animals.addAll( newAnimals );
+    }
 
     public WorldMapElements(AbstractWorldMap map){
         this.map = map;

@@ -80,10 +80,9 @@ public class SimulationEngine implements Runnable {
                 elements.cleanMap();
                 elements.move();
                 everyoneEat();
-                ArrayList<Animal> newAnimals = everyoneBreed();
+                everyoneBreed();
                 map.addNewPlants();
                 System.out.print(map);
-                i += 1;
                 app.refresh();
             }
             catch (InterruptedException e) {
@@ -97,7 +96,10 @@ public class SimulationEngine implements Runnable {
     }
 
     public void everyoneBreed() {
-        map.fields.values().forEach( Field::breed );
+        map.fields.values().forEach( field -> {
+            ArrayList<Animal> newAnimals = field.breed();
+            elements.addAnimals( newAnimals );
+        } );
     }
     public void setMoveDelay(int delay){
         this.moveDelay = delay;
