@@ -5,6 +5,7 @@ import java.util.*;
 public class WorldMapElements {
     private ArrayList<Animal> animals = new ArrayList<>();
     private AbstractWorldMap map;
+    protected HashMap<Vector2d, Field> fields = new HashMap<>();
 
     public ArrayList<Animal> getAnimals() {
         return animals;
@@ -12,7 +13,9 @@ public class WorldMapElements {
 
     public WorldMapElements(AbstractWorldMap map){
         this.map = map;
+        this.fields = map.fields;
     }
+
     public void addAnimal(Animal animal){
         animals.add(animal);
     }
@@ -23,11 +26,6 @@ public class WorldMapElements {
         }
     }
 
-    public void everyoneEat() {
-        for (Animal animal : animals) {
-            animal.eat( animal );
-        }
-    }
 
     public void cleanMap() {
         for (Animal animal : animals) {
@@ -38,11 +36,6 @@ public class WorldMapElements {
         animals.removeIf( animal -> animal.getEnergy() == 0 );
     }
 
-    public void letsBreed() {
-        for (Animal animal : animals) {
-            animal.breed( animal );
-        }
-    }
 
 
 }

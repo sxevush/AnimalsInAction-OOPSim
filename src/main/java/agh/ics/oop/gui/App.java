@@ -23,7 +23,7 @@ public class App extends Application {
 
     private GridPane grid = new GridPane();
     private String title = "Symulacja";
-    private int moveDelay  = 300;
+    private int moveDelay  = 1000;
 
 
     public void start(Stage primaryStage) {

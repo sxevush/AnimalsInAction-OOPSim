@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractWorldMap {
@@ -12,13 +13,44 @@ public abstract class AbstractWorldMap {
     private int numberOfMutations = 2;
     private int genotypeSize = 10;
 
-    protected final HashMap<Vector2d, Field> fields = new HashMap<>();
-    protected ArrayList<Animal> parentsAfterBreeding = new ArrayList<>();
+    protected HashMap<Vector2d, Field> fields = new HashMap<>();
+    protected ArrayList<Field> fieldArrayList;
 
 
     protected AbstractWorldMap(int width, int height) {
         this.width = width;
         this.height = height;
+        createMap( width, height );
+    }
+
+    public void createMap (int width, int height) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                fields.put( new Vector2d( x, y ), new Field( this ));
+            }
+        }
+        List<Field> fieldList = fields.values().stream().toList();
+        fieldArrayList = new ArrayList<>(fieldList);
+        Collections.shuffle( fieldArrayList );
+    }
+
+    public void addNewPlants() {
+        Stream<Field> fieldStream = fieldArrayList.stream()
+                .filter( field -> field.plant == 0 )
+                .sorted(Comparator.comparingInt( Field::getNumberOfDiedAnimals )
+                        .reversed());
+
+        fieldStream.limit( newPlants )
+                .forEach( field -> field.addPlant( plantEnergy ) );
+
+
+//        Stream<Field> fieldStream = fields.values().parallelStream().parallel()
+//                .filter( field -> field.plant == 0 )
+//                .sorted(Comparator.comparingInt( Field::getNumberOfDiedAnimals )
+//                        .reversed());
+//        fieldStream.
+//                limit( newPlants ).
+//                forEach( field -> field.addPlant( plantEnergy ) );
     }
 
     public int getStartingAnimalEnergy() {
@@ -33,19 +65,12 @@ public abstract class AbstractWorldMap {
         this.newPlants = newPlants;
     }
 
-    public void addNewPlants() {
-        Stream<Field> fieldsCollection = fields.values().stream();
-        fieldsCollection = fieldsCollection.sorted( Comparator.comparingInt( Field::getNumberOfDiedAnimals ).reversed() );
-        List<Field> fieldsWithNewPlants = fieldsCollection.limit( newPlants ).toList();
-        for (Field field : fieldsWithNewPlants) {
-            placePlant( plantEnergy, field.getPosition() );
-        }
-    }
+
 
     public void place(Animal animal) {
         Vector2d position = animal.getPosition();
         if(objectAt(position) == null) {
-            Field field = new Field(this, position);
+            Field field = new Field(this);
             field.addAnimal(animal);
             fields.put(position, field);
         }
@@ -55,25 +80,13 @@ public abstract class AbstractWorldMap {
     }
 
     public void placePlant(int energy, Vector2d position) {
-        if(objectAt(position) == null) {
-            Field field = new Field(this, position);
-            field.addPlant(energy);
-            fields.put(position, field);
-        }
-        else{
-            fields.get(position).addPlant(energy);
-        }
+        fields.get(position).addPlant(energy);
     }
 
     public void remove(Animal animal){
         Vector2d position = animal.getPosition();
-        if (fields.get( position ) != null) {
-            fields.get( position ).addDiedAnimal();
-            fields.get(position).removeAnimal(animal);
-            if(fields.get(position).isEmpty()) {
-                fields.remove(position);
-            }
-        }
+        fields.get(position).addDiedAnimal();
+        fields.get(position).removeAnimal(animal);
     }
 
     public Object objectAt(Vector2d position) {
@@ -85,18 +98,6 @@ public abstract class AbstractWorldMap {
     }
 
     public abstract void checkBoundaries(Animal animal);
-
-    public void addParentsAfterBreeding(ArrayList<Animal> parentsAfterBreeding) {
-        this.parentsAfterBreeding.addAll( parentsAfterBreeding );
-    }
-
-    public void setParentsAfterBreeding(ArrayList<Animal> parentsAfterBreeding) {
-        this.parentsAfterBreeding = parentsAfterBreeding;
-    }
-
-    public ArrayList<Animal> getParentsAfterBreeding() {
-        return parentsAfterBreeding;
-    }
 
     public String toString() {
         MapVisualizer drawing = new MapVisualizer(this);
@@ -127,18 +128,15 @@ public abstract class AbstractWorldMap {
         this.genotypeSize = genotypeSize;
     }
 
-    public String getImagePath(Vector2d position){
-        if(!this.isOccupied(position) || this.fields.get(position).isEmpty()){
-            return "src/main/resources/empty.png";
-        }
-        return fields.get(position).getImagePath();
+    public int getHeight() {
+        return height;
     }
-
     public int getWidth(){
         return width;
     }
-    public int getHeight(){
-        return height;
+
+    public String getImagePath(Vector2d position){
+        return fields.get(position).getImagePath();
     }
 
 }

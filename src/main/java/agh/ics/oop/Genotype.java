@@ -24,14 +24,13 @@ public class Genotype {
     public Genotype(int genotypeSize, int numberOfMutations) {
         Random rand = new Random();
         newGenotype( rand, genotypeSize );
-        System.out.println(genotype);
-        mutate( rand );
-        System.out.println(genotype);
         this.genotypeSize = genotypeSize;
         this.numberOfMutations = numberOfMutations;
     }
 
     public Genotype(Animal parent1, Animal parent2, int genotypeSize, int numberOfMutations){
+        this.genotypeSize = genotypeSize;
+        this.numberOfMutations = numberOfMutations;
         int change = parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize; //todo sprawdzic czy dziala change w genotype
 
         double probability = Math.random();

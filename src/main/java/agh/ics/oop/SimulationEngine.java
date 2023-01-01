@@ -4,27 +4,23 @@ import agh.ics.oop.gui.App;
 
 import java.util.*;
 
-public class SimulationEngine implements Runnable{
+public class SimulationEngine implements Runnable {
 
-    private final WorldMapElements elements;
-    private final AbstractWorldMap map;
+    private WorldMapElements elements;
+    private AbstractWorldMap map;
     private int worldAge = 10;
     protected int numberOfAnimals = 5;
     private int numberOfPlants = 20;
+    private int moveDelay = 0;
+    private App app;
 
     private final ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
     private final HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
-
-    //parametry aplikacyjne
-    private int moveDelay = 0;
-
-    private App app;
 
     public SimulationEngine(AbstractWorldMap map) {
         this.map = map;
         this.elements = new WorldMapElements(map);
     }
-
     public SimulationEngine(AbstractWorldMap map, App app) {
         this.map = map;
         this.elements = new WorldMapElements(map);
@@ -42,6 +38,9 @@ public class SimulationEngine implements Runnable{
     public void setNumberOfPlants(int numberOfPlants) {
         this.numberOfPlants = numberOfPlants; //todo wyjatek zeby nie bylo wiecej niz sie da
     }
+
+
+
 
     private void randomizePositions(AbstractWorldMap map, Collection<Vector2d> positions, int numberOfElements) {
         Random rand = new Random();
@@ -73,29 +72,33 @@ public class SimulationEngine implements Runnable{
     public void run() {
         placeAnimals( map );
         placePlants( map );
-        for (int i = 0; i < worldAge; i++) {
+        System.out.print(map);
+
+        for (int i = 0; i < worldAge; i++){
             try {
                 Thread.sleep(moveDelay);
                 elements.cleanMap();
                 elements.move();
-                elements.everyoneEat();
-                elements.letsBreed();
-                for (Animal animal : map.getParentsAfterBreeding()) {
-                    elements.addAnimal(animal);
-                    map.place(animal);
-                }
-                map.setParentsAfterBreeding( new ArrayList<>() ); // todo brzydkie w chuj - zmienic
+                everyoneEat();
+                ArrayList<Animal> newAnimals = everyoneBreed();
                 map.addNewPlants();
+                System.out.print(map);
+                i += 1;
                 app.refresh();
-
-
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
+    public void everyoneEat() {
+        map.fields.values().forEach( Field::eat );
+    }
+
+    public void everyoneBreed() {
+        map.fields.values().forEach( Field::breed );
+    }
     public void setMoveDelay(int delay){
         this.moveDelay = delay;
     }
