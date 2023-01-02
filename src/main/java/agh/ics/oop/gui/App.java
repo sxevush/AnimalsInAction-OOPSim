@@ -15,55 +15,61 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 
 public class App extends Application {
-    private AbstractWorldMap map = new Globe(10, 10);; //TODO ustawić menu jakies i setter
+    private AbstractWorldMap map; //TODO ustawić menu jakies i setter
     private SimulationEngine engine;
     private int fieldSize = 30;
-    private int windowHeight = fieldSize * map.getHeight(); //TODO dostosować rozmiar okna do wymiarów mapy pewnie przez jakas funkcje
-    private int windowWidth = fieldSize * map.getWidth();
+    private int windowHeight;
+    private int windowWidth;
 
     private GridPane grid = new GridPane();
     private String title = "Symulacja";
-    private int moveDelay  = 30;
 
 
+    public App(String mapType,int width, int height, int numAnimals, int numPlants, int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations){
+        if(mapType=="hell"){
+            this.map = new Hell(width, height);
+        }
+        else if(mapType=="globe"){
+            this.map = new Globe(width, height);
+        }
+        windowHeight = fieldSize * (height+2);
+        windowWidth = fieldSize * (width+2);
+
+        this.engine = new SimulationEngine(map, this);
+        engine.setMoveDelay(timeSleep);
+        engine.setNumberOfPlants( numPlants ); // todo wyjatki dla za duzych/ujemnych wartosci
+        engine.setWorldAge( worldAge );
+        engine.setNumberOfAnimals( numAnimals );
+
+        map.setNewPlants( numPlantsPerYear );
+        map.setPlantEnergy( plantEnergy );
+        map.setStartingAnimalEnergy( startingAnimalEnergy );
+        map.setGenotypeSize( genotypeSize );
+        map.setNumberOfMutations( numberOfMutations );
+
+
+    }
     public void start(Stage primaryStage) {
 
         newGrid();
         VBox vBox = new VBox(
-                grid,
-                startButton());
+                grid, stopButton(primaryStage));
 
-        Scene scene = new Scene(vBox, windowWidth, windowHeight + 63); //TODO ustalic wymiar paska pod symulacja
+        Scene scene = new Scene(vBox, windowWidth, windowHeight);
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.show();
+        Thread thread = new Thread(engine);
+        thread.start();
     }
 
-    public Button startButton() {
-        Button startButton = new Button("Start");
-        startButton.setOnAction((action) -> {
-            try {
-                this.engine = new SimulationEngine(map, this);
-                engine.setMoveDelay(this.moveDelay);
-                engine.setNumberOfPlants( 20 ); // todo wyjatki dla za duzych/ujemnych wartosci
-                engine.setWorldAge( 240 );
-                engine.setNumberOfAnimals( 10 );
-                map.setNewPlants( 7 );
-                map.setPlantEnergy( 3 );
-                map.setStartingAnimalEnergy( 20 );
-                map.setGenotypeSize( 8 );
-                map.setNumberOfMutations( 2 );
-                Thread thread = new Thread(engine);
-                thread.start();
-            }
-            catch (IllegalArgumentException exception){
-                System.out.println(exception);
-                System.exit(0);
-            }
+    public Button stopButton(Stage primaryStage){
+        Button stopButton = new Button("Stop");
+        stopButton.setOnAction((action) -> {
+            primaryStage.close();
         });
-        return startButton;
+        return stopButton;
     }
-
     public void newGrid(){
 
         int width = fieldSize ;

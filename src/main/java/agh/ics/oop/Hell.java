@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Hell extends AbstractWorldMap {
 
-    protected Hell(int width, int height) {
+    public Hell(int width, int height) {
         super(width, height);
     }
 

@@ -72,9 +72,8 @@ public class SimulationEngine implements Runnable {
     public void run() {
         placeAnimals( map );
         placePlants( map );
-        System.out.print(map);
 
-        for (int i = 0; i < worldAge; i++){
+        for (int i = 0; i < worldAge; i++) {
             try {
                 Thread.sleep(moveDelay);
                 elements.cleanMap();
@@ -82,13 +81,13 @@ public class SimulationEngine implements Runnable {
                 everyoneEat();
                 everyoneBreed();
                 map.addNewPlants();
-                System.out.print(map);
                 app.refresh();
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
+
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     public void everyoneEat() {
