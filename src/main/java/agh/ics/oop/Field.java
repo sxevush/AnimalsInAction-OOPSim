@@ -123,7 +123,7 @@ public class Field {
         if(this.isEmpty()){
             return "src/main/resources/empty.png";
         }
-        if(plant == 0){
+        if(animals.size()>0){
             if(animals.size()==1) {
                 return "src/main/resources/oneAnimal.png";
             }
