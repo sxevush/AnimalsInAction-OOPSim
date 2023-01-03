@@ -163,7 +163,7 @@ public class Menu extends Application {
                     throw new NumberFormatException();
                 }
                 numberOfMutations = Integer.parseInt(numMutationsField.getText());
-                if(numberOfMutations<0){
+                if(numberOfMutations < 0 || numberOfMutations > genotypeSize){
                     throw new NumberFormatException();
                 }
                 startSimulation(map, width, height, numAnimals, numPlants,
