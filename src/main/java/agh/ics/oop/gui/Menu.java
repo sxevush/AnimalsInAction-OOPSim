@@ -142,7 +142,7 @@ public class Menu extends Application {
                     throw new NumberFormatException();
                 }
                 timeSleep = Integer.parseInt(timeSleepField.getText());
-                if (timeSleep < 100) {
+                if (timeSleep < 50) {
                     throw new NumberFormatException();
                 }
                 worldAge = Integer.parseInt(worldAgeField.getText());
