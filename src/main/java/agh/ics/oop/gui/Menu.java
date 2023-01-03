@@ -26,7 +26,7 @@ public class Menu extends Application {
         ComboBox<String> mapComboBox = new ComboBox<>();
         mapComboBox.getItems().addAll("hell", "globe");
         mapComboBox.setPromptText("Choose map type");
-        mapComboBox.setValue("hell");
+        mapComboBox.setValue("globe");
 
         Label widthLabel = new Label("Map width:");
         TextField widthField = new TextField("10");
@@ -35,28 +35,28 @@ public class Menu extends Application {
         TextField heightField = new TextField("10");
 
         Label numAnimalsLabel = new Label("Number of starting animals:");
-        TextField numAnimalsField = new TextField("5");
+        TextField numAnimalsField = new TextField("10");
 
         Label numPlantsLabel = new Label("Number of starting plants:");
         TextField numPlantsField = new TextField("5");
 
         Label startingAnimalEnergyLabel = new Label("Starting animal energy:");
-        TextField startingAnimalEnergyField = new TextField("20");
+        TextField startingAnimalEnergyField = new TextField("10");
 
         Label breedEnergyLabel = new Label("Minimum breed energy:");
-        TextField breedEnergyField = new TextField("10");
+        TextField breedEnergyField = new TextField("5");
 
         Label numPlantsPerYearLabel = new Label("Number of plants per year:");
-        TextField numPlantsPerYearField = new TextField("5");
+        TextField numPlantsPerYearField = new TextField("1");
 
         Label plantEnergyLabel = new Label("Plant energy:");
-        TextField plantEnergyField = new TextField("1");
+        TextField plantEnergyField = new TextField("4");
 
         Label timeSleepLabel = new Label("Time sleep:");
-        TextField timeSleepField = new TextField("500");
+        TextField timeSleepField = new TextField("100");
 
         Label worldAgeLabel = new Label("World Age:");
-        TextField worldAgeField = new TextField("240");
+        TextField worldAgeField = new TextField("1000");
 
         Label genotypeSizeLabel = new Label("Genotype size:");
         TextField genotypeSizeField = new TextField("8");
@@ -106,11 +106,11 @@ public class Menu extends Application {
             int numberOfMutations = 0;
             try {
                 width = Integer.parseInt(widthField.getText());
-                if (width < 0 || width > 30) {
+                if (width < 0 || width > 50) {
                     throw new NumberFormatException();
                 }
                 height = Integer.parseInt(heightField.getText());
-                if (height < 0 || height > 30) {
+                if (height < 0 || height > 50) {
                     throw new NumberFormatException();
                 }
                 numAnimals = Integer.parseInt(numAnimalsField.getText());

@@ -33,4 +33,7 @@ public class WorldMapElements {
         }
         animals.removeIf( animal -> animal.getEnergy() == 0 );
     }
+    public int getSize(){
+        return this.animals.size();
+    }
 }

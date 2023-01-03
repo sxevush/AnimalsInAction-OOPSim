@@ -46,13 +46,14 @@ public class App extends Application {
         map.setStartingAnimalEnergy( startingAnimalEnergy );
         map.setGenotypeSize( genotypeSize );
         map.setNumberOfMutations( numberOfMutations );
+        map.setMinBreedEnergy(breedEnergy);
     }
 
     public void start(Stage primaryStage) {
 
         newGrid();
         VBox vBox = new VBox(
-                grid, stopButton(primaryStage));
+                grid, stopButton(primaryStage), pauseButton());
 
         Scene scene = new Scene(vBox, windowWidth, windowHeight);
         primaryStage.setTitle(title);
@@ -66,8 +67,17 @@ public class App extends Application {
         Button stopButton = new Button("Stop");
         stopButton.setOnAction((action) -> {
             primaryStage.close();
+            engine.stop();
         });
         return stopButton;
+    }
+
+    public Button pauseButton(){
+        Button pauseButton = new Button("Pause/Unpause");
+        pauseButton.setOnAction((action) -> {
+            engine.pause();
+        });
+        return pauseButton;
     }
 
     public void newGrid(){

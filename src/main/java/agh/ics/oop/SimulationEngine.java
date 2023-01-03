@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.gui.App;
+import javafx.application.Platform;
 
 import java.util.*;
 
@@ -13,6 +14,8 @@ public class SimulationEngine implements Runnable {
     private int numberOfPlants = 20;
     private int moveDelay = 0;
     private App app;
+    private boolean stopped = false;
+    private boolean paused = false;
 
     private final ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
     private final HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
@@ -62,19 +65,30 @@ public class SimulationEngine implements Runnable {
         placePlants( map );
 
         for (int i = 0; i < worldAge; i++) {
-            try {
-                Thread.sleep(moveDelay);
-                elements.cleanMap();
-                elements.move();
-                everyoneEat();
-                everyoneBreed();
-                map.addNewPlants();
-                app.refresh();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if(elements.getSize()!=0 && !stopped) {
+                try {
+                    while(paused){System.out.print("");}
+                    Thread.sleep(moveDelay);
+                    elements.cleanMap();
+                    elements.move();
+                    everyoneEat();
+                    everyoneBreed();
+                    map.addNewPlants();
+                    app.refresh();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            else{break;}
         }
 
+
+    }
+    public void stop(){
+        this.stopped = true;
+    }
+    public void pause(){
+        this.paused = !paused;
     }
 
     public void everyoneEat() {
@@ -87,4 +101,5 @@ public class SimulationEngine implements Runnable {
             elements.addAnimals( newAnimals );
         } );
     }
+
 }

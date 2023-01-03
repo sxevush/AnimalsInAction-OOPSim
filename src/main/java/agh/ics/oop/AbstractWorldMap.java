@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 public abstract class AbstractWorldMap {
     protected final int width;
     protected final int height;
+    public int minBreedEnergy;
     private int newPlants;
     private int plantEnergy = 5;
     public int startingAnimalEnergy = 20;
@@ -96,6 +97,9 @@ public abstract class AbstractWorldMap {
 
     public void setPlantEnergy(int plantEnergy) {
         this.plantEnergy = plantEnergy;
+    }
+    public void setMinBreedEnergy(int minBreedEnergy){
+        this.minBreedEnergy = minBreedEnergy;
     }
 
     public int getPlantEnergy() {

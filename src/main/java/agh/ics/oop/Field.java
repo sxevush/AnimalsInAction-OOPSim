@@ -3,8 +3,8 @@ package agh.ics.oop;
 import java.util.*;
 
 public class Field {
-    private int energyToBreed = 5; //todo setter energyToBreed
-    private int stuffedAnimal = 5; //todo wieksze od energyToBreed
+    private int energyToBreed;
+    private int minBreedEnergy = 5; //todo wieksze od energyToBreed
     //todo setter stuffedAnimal
     protected Comparator<Animal> animalComparator = (a1, a2) -> {
         if (a1.getEnergy() == a2.getEnergy()) {
@@ -20,31 +20,42 @@ public class Field {
 
     public Field (AbstractWorldMap map) {
         this.map = map;
+        this.energyToBreed = map.startingAnimalEnergy/2;
+        this.minBreedEnergy = map.minBreedEnergy;
     }
 
     public String getImagePath() {
         if(this.isEmpty()){
-            return "src/main/resources/empty.png";
+            return "src/main/resources/empty2.png";
         }
         if(animals.size()>0){
             if(animals.size()==1) {
-                return "src/main/resources/oneAnimal.png";
+                return "src/main/resources/oneAnimal2.png";
             }
-            return "src/main/resources/animal.png";
+            if(animals.size()==2) {
+                return "src/main/resources/twoAnimals.png";
+            }
+            if(animals.size()==3) {
+                return "src/main/resources/threeAnimals.png";
+            }
+            if(animals.size()==4) {
+                return "src/main/resources/fourAnimals.png";
+            }
+            if(animals.size()==5) {
+                return "src/main/resources/fiveAnimals.png";
+            }
+            if(animals.size()==6) {
+                return "src/main/resources/sixAnimals.png";
+            }
+            return "src/main/resources/manyAnimals.png";
         }
-        return "src/main/resources/plant.png";
+        return "src/main/resources/plant2.png";
     }
     public int getNumberOfDiedAnimals() {
         return numberOfDiedAnimals;
     }
     public PriorityQueue<Animal> getAnimals() {
         return animals;
-    }
-    public void setEnergyToBreed(int energyToBreed) {
-        this.energyToBreed = energyToBreed;
-    }
-    public void setStuffedAnimal(int stuffedAnimal) {
-        this.stuffedAnimal = stuffedAnimal;
     }
     public void setAnimals(PriorityQueue<Animal> animals) {
         this.animals = animals;
@@ -95,10 +106,10 @@ public class Field {
             parentsAfterBreeding.add( parent2 );
 
             assert parent1 != null;
-            if (parent1.getEnergy() >= stuffedAnimal && parent1.getAge() > 0) {
+            if (parent1.getEnergy() >= minBreedEnergy && parent1.getAge() > 0) {
 
                 assert parent2 != null;
-                if (parent2.getEnergy() >= stuffedAnimal && parent2.getAge() > 0) {
+                if (parent2.getEnergy() >= minBreedEnergy && parent2.getAge() > 0) {
 
                     Animal newAnimal = new Animal( parent1, parent2, 2 * energyToBreed  );
                     parent1.modifyEnergy( -energyToBreed );
