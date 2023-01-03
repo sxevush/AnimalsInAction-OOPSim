@@ -88,7 +88,11 @@ public class Menu extends Application {
                 genotypeSizeField, numMutationsField, startButton);
     }
 
-    private void setStartButton(ComboBox<String> mapComboBox, TextField widthField, TextField heightField, TextField numAnimalsField, TextField numPlantsField, TextField startingAnimalEnergyField, TextField breedEnergyField, TextField numPlantsPerYearField, TextField plantEnergyField, TextField timeSleepField, TextField worldAgeField, TextField genotypeSizeField, TextField numMutationsField, Button startButton) {
+    private void setStartButton(ComboBox<String> mapComboBox, TextField widthField, TextField heightField,
+                                TextField numAnimalsField, TextField numPlantsField, TextField startingAnimalEnergyField,
+                                TextField breedEnergyField, TextField numPlantsPerYearField, TextField plantEnergyField,
+                                TextField timeSleepField, TextField worldAgeField, TextField genotypeSizeField,
+                                TextField numMutationsField, Button startButton) {
         startButton.setOnAction(event -> {
             // Pobierz wartości parametrów z pól tekstowych
             String map = mapComboBox.getValue();
@@ -153,23 +157,31 @@ public class Menu extends Application {
                 if(numberOfMutations<0){
                     throw new NumberFormatException();
                 }
-
                 startSimulation(map, width, height, numAnimals, numPlants, startingAnimalEnergy, breedEnergy, numPlantsPerYear, plantEnergy, timeSleep, worldAge, genotypeSize, numberOfMutations);
             } catch (NumberFormatException e) {
-
                 System.out.println("Invalid parameter");
             }
         });
     }
 
     private static void setScene(Stage primaryStage, GridPane root) {
-        Scene scene = new Scene(root, 300, 500);
+        Scene scene = new Scene(root, 400, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
 
-    private static void addElementsToRoot(GridPane root, Label mapLabel, ComboBox<String> mapComboBox, Label widthLabel, TextField widthField, Label heightLabel, TextField heightField, Label numAnimalsLabel, TextField numAnimalsField, Label numPlantsLabel, TextField numPlantsField, Label startingAnimalEnergyLabel, TextField startingAnimalEnergyField, Label breedEnergyLabel, TextField breedEnergyField, Label numPlantsPerYearLabel, TextField numPlantsPerYearField, Label plantEnergyLabel, TextField plantEnergyField, Label timeSleepLabel, TextField timeSleepField, Label worldAgeLabel, TextField worldAgeField, Label genotypeSizeLabel, TextField genotypeSizeField, Label numberOfMutationsLabel, TextField numMutationsField, Button exitButton, Button startButton) {
+    private static void addElementsToRoot(GridPane root, Label mapLabel, ComboBox<String> mapComboBox,
+                                          Label widthLabel, TextField widthField, Label heightLabel,
+                                          TextField heightField, Label numAnimalsLabel, TextField numAnimalsField,
+                                          Label numPlantsLabel, TextField numPlantsField, Label startingAnimalEnergyLabel,
+                                          TextField startingAnimalEnergyField, Label breedEnergyLabel,
+                                          TextField breedEnergyField, Label numPlantsPerYearLabel,
+                                          TextField numPlantsPerYearField, Label plantEnergyLabel,
+                                          TextField plantEnergyField, Label timeSleepLabel, TextField timeSleepField,
+                                          Label worldAgeLabel, TextField worldAgeField, Label genotypeSizeLabel,
+                                          TextField genotypeSizeField, Label numberOfMutationsLabel, TextField numMutationsField,
+                                          Button exitButton, Button startButton) {
         root.add(mapLabel, 0, 0);
         root.add(mapComboBox, 1, 0);
         root.add(widthLabel, 0, 1);
@@ -208,7 +220,10 @@ public class Menu extends Application {
         return root;
     }
 
-    private void startSimulation(String map, int width, int height, int numAnimals, int numPlants, int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations) {
+    private void startSimulation(String map, int width, int height, int numAnimals,
+                                 int numPlants, int startingAnimalEnergy, int breedEnergy,
+                                 int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge,
+                                 int genotypeSize, int numberOfMutations) {
         this.app = new App(map, width, height, numAnimals, numPlants, startingAnimalEnergy, breedEnergy, numPlantsPerYear, plantEnergy, timeSleep, worldAge, genotypeSize, numberOfMutations);
         this.app.start(new Stage());
     }
