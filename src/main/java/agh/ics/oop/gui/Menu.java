@@ -43,8 +43,11 @@ public class Menu extends Application {
         Label startingAnimalEnergyLabel = new Label("Starting animal energy:");
         TextField startingAnimalEnergyField = new TextField("10");
 
-        Label breedEnergyLabel = new Label("Minimum breed energy:");
-        TextField breedEnergyField = new TextField("5");
+        Label minBreedEnergyLabel = new Label("Minimum energy to breed:");
+        TextField minBreedEnergyField = new TextField("5");
+
+        Label energyToBreedLabel = new Label("Energy used during breeding:");
+        TextField energyToBreedField = new TextField("5");
 
         Label numPlantsPerYearLabel = new Label("Number of plants per year:");
         TextField numPlantsPerYearField = new TextField("1");
@@ -71,7 +74,8 @@ public class Menu extends Application {
         addElementsToRoot(root, mapLabel, mapComboBox, widthLabel,
                 widthField, heightLabel, heightField, numAnimalsLabel,
                 numAnimalsField, numPlantsLabel, numPlantsField, startingAnimalEnergyLabel,
-                startingAnimalEnergyField, breedEnergyLabel, breedEnergyField, numPlantsPerYearLabel,
+                startingAnimalEnergyField, minBreedEnergyLabel, minBreedEnergyField,
+                energyToBreedLabel, energyToBreedField, numPlantsPerYearLabel,
                 numPlantsPerYearField, plantEnergyLabel, plantEnergyField, timeSleepLabel, timeSleepField,
                 worldAgeLabel, worldAgeField, genotypeSizeLabel, genotypeSizeField, numberOfMutationsLabel,
                 numMutationsField, exitButton, startButton);
@@ -83,14 +87,14 @@ public class Menu extends Application {
         exitButton.setOnAction(event -> {System.exit(0);});
 
         setStartButton(mapComboBox, widthField, heightField, numAnimalsField,
-                numPlantsField, startingAnimalEnergyField, breedEnergyField,
+                numPlantsField, startingAnimalEnergyField, minBreedEnergyField, energyToBreedField,
                 numPlantsPerYearField, plantEnergyField, timeSleepField, worldAgeField,
                 genotypeSizeField, numMutationsField, startButton);
     }
 
     private void setStartButton(ComboBox<String> mapComboBox, TextField widthField, TextField heightField,
                                 TextField numAnimalsField, TextField numPlantsField, TextField startingAnimalEnergyField,
-                                TextField breedEnergyField, TextField numPlantsPerYearField, TextField plantEnergyField,
+                                TextField minBreedEnergyField, TextField energyToBreedField, TextField numPlantsPerYearField, TextField plantEnergyField,
                                 TextField timeSleepField, TextField worldAgeField, TextField genotypeSizeField,
                                 TextField numMutationsField, Button startButton) {
         startButton.setOnAction(event -> {
@@ -101,7 +105,8 @@ public class Menu extends Application {
             int numAnimals = 0;
             int numPlants = 0;
             int startingAnimalEnergy = 0;
-            int breedEnergy = 0;
+            int minBreedEnergy = 0;
+            int energyToBreed = 0;
             int numPlantsPerYear = 0;
             int plantEnergy = 0;
             int timeSleep = 0;
@@ -129,8 +134,12 @@ public class Menu extends Application {
                 if (startingAnimalEnergy < 0) {
                     throw new NumberFormatException();
                 }
-                breedEnergy = Integer.parseInt(breedEnergyField.getText());
-                if (breedEnergy < 0) {
+                minBreedEnergy = Integer.parseInt(minBreedEnergyField.getText());
+                if (minBreedEnergy < 0) {
+                    throw new NumberFormatException();
+                }
+                energyToBreed = Integer.parseInt(energyToBreedField.getText());
+                if (energyToBreed < 0 || energyToBreed > minBreedEnergy) {
                     throw new NumberFormatException();
                 }
                 numPlantsPerYear = Integer.parseInt(numPlantsPerYearField.getText());
@@ -157,7 +166,9 @@ public class Menu extends Application {
                 if(numberOfMutations<0){
                     throw new NumberFormatException();
                 }
-                startSimulation(map, width, height, numAnimals, numPlants, startingAnimalEnergy, breedEnergy, numPlantsPerYear, plantEnergy, timeSleep, worldAge, genotypeSize, numberOfMutations);
+                startSimulation(map, width, height, numAnimals, numPlants,
+                        startingAnimalEnergy, minBreedEnergy, energyToBreed, numPlantsPerYear,
+                        plantEnergy, timeSleep, worldAge, genotypeSize, numberOfMutations);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid parameter");
             }
@@ -165,7 +176,7 @@ public class Menu extends Application {
     }
 
     private static void setScene(Stage primaryStage, GridPane root) {
-        Scene scene = new Scene(root, 400, 500);
+        Scene scene = new Scene(root, 400, 520);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Menu");
         primaryStage.show();
@@ -175,8 +186,9 @@ public class Menu extends Application {
                                           Label widthLabel, TextField widthField, Label heightLabel,
                                           TextField heightField, Label numAnimalsLabel, TextField numAnimalsField,
                                           Label numPlantsLabel, TextField numPlantsField, Label startingAnimalEnergyLabel,
-                                          TextField startingAnimalEnergyField, Label breedEnergyLabel,
-                                          TextField breedEnergyField, Label numPlantsPerYearLabel,
+                                          TextField startingAnimalEnergyField, Label minBreedEnergyLabel,
+                                          TextField minBreedEnergyField, Label energyToBreedLabel,
+                                          TextField energyToBreedField, Label numPlantsPerYearLabel,
                                           TextField numPlantsPerYearField, Label plantEnergyLabel,
                                           TextField plantEnergyField, Label timeSleepLabel, TextField timeSleepField,
                                           Label worldAgeLabel, TextField worldAgeField, Label genotypeSizeLabel,
@@ -194,22 +206,24 @@ public class Menu extends Application {
         root.add(numPlantsField, 1, 4);
         root.add(startingAnimalEnergyLabel, 0, 5);
         root.add(startingAnimalEnergyField, 1, 5);
-        root.add(breedEnergyLabel, 0, 6);
-        root.add(breedEnergyField, 1, 6);
-        root.add(numPlantsPerYearLabel, 0, 7);
-        root.add(numPlantsPerYearField, 1, 7);
-        root.add(plantEnergyLabel, 0, 8);
-        root.add(plantEnergyField, 1, 8);
-        root.add(timeSleepLabel, 0, 9);
-        root.add(timeSleepField, 1, 9);
-        root.add(worldAgeLabel, 0, 10);
-        root.add(worldAgeField, 1, 10);
-        root.add(genotypeSizeLabel, 0, 11);
-        root.add(genotypeSizeField, 1, 11);
-        root.add(numberOfMutationsLabel, 0, 12);
-        root.add(numMutationsField, 1, 12);
-        root.add(exitButton, 1, 13);
-        root.add(startButton, 0, 13);
+        root.add(minBreedEnergyLabel, 0, 6);
+        root.add(minBreedEnergyField, 1, 6);
+        root.add(energyToBreedLabel, 0, 7);
+        root.add(energyToBreedField, 1, 7);
+        root.add(numPlantsPerYearLabel, 0, 8);
+        root.add(numPlantsPerYearField, 1, 8);
+        root.add(plantEnergyLabel, 0, 9);
+        root.add(plantEnergyField, 1, 9);
+        root.add(timeSleepLabel, 0, 10);
+        root.add(timeSleepField, 1, 10);
+        root.add(worldAgeLabel, 0, 11);
+        root.add(worldAgeField, 1, 11);
+        root.add(genotypeSizeLabel, 0, 12);
+        root.add(genotypeSizeField, 1, 12);
+        root.add(numberOfMutationsLabel, 0, 13);
+        root.add(numMutationsField, 1, 13);
+        root.add(exitButton, 1, 14);
+        root.add(startButton, 0, 14);
     }
 
     private static GridPane getGridPane() {
@@ -221,10 +235,12 @@ public class Menu extends Application {
     }
 
     private void startSimulation(String map, int width, int height, int numAnimals,
-                                 int numPlants, int startingAnimalEnergy, int breedEnergy,
+                                 int numPlants, int startingAnimalEnergy, int minBreedEnergy, int energyToBreed,
                                  int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge,
                                  int genotypeSize, int numberOfMutations) {
-        this.app = new App(map, width, height, numAnimals, numPlants, startingAnimalEnergy, breedEnergy, numPlantsPerYear, plantEnergy, timeSleep, worldAge, genotypeSize, numberOfMutations);
+        this.app = new App(map, width, height, numAnimals, numPlants,
+                startingAnimalEnergy, minBreedEnergy, energyToBreed, numPlantsPerYear, plantEnergy,
+                timeSleep, worldAge, genotypeSize, numberOfMutations);
         this.app.start(new Stage());
     }
 }

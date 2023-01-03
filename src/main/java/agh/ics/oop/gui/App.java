@@ -27,7 +27,7 @@ public class App extends Application {
     private Statistics statistics;
 
     public App(String mapType, int width, int height, int numAnimals, int numPlants,
-               int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear,
+               int startingAnimalEnergy, int minBreedEnergy, int energyToBreed, int numPlantsPerYear,
                int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations){
         if(Objects.equals(mapType, "hell")){
             this.map = new Hell(width, height);
@@ -49,8 +49,8 @@ public class App extends Application {
         map.setStartingAnimalEnergy( startingAnimalEnergy );
         map.setGenotypeSize( genotypeSize );
         map.setNumberOfMutations( numberOfMutations );
-
-        map.setMinBreedEnergy(breedEnergy);
+        map.setMinBreedEnergy(minBreedEnergy);
+        map.setEnergyToBreed(energyToBreed);
 
 
         this.statistics = new Statistics(this.map, this, this.engine);

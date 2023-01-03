@@ -8,6 +8,7 @@ import java.util.Random;
 public class Genotype {
     private List<Integer> genotype = new ArrayList<>();
     private int pointer = 0;
+    Random rand = new Random();
     private HashSet<Integer> mutations = new HashSet<>(); // pozwala na niepowtarzajace sie elementy
     int genotypeSize;
     int numberOfMutations;
@@ -45,10 +46,10 @@ public class Genotype {
             this.genotype.add(gen);
         }
 
-        Random rand = new Random();
+
         this.pointer = rand.nextInt(genotypeSize);
 
-        mutate( rand );
+        mutate();
 
     }
 
@@ -59,9 +60,9 @@ public class Genotype {
         }
     }
 
-    private void mutate(Random rand) {
+    private void mutate() {
         while (mutations.size() < numberOfMutations) {
-            int mutation = rand.nextInt(8);
+            int mutation = rand.nextInt(genotypeSize);
             mutations.add(mutation);
         }
 

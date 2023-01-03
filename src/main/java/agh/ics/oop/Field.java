@@ -3,7 +3,7 @@ package agh.ics.oop;
 import java.util.*;
 
 public class Field {
-    private int energyToBreed;
+    private int energyToBreed = 5;
     private int minBreedEnergy = 5; //todo wieksze od energyToBreed
     //todo setter stuffedAnimal
     protected Comparator<Animal> animalComparator = (a1, a2) -> {
@@ -118,6 +118,7 @@ public class Field {
                     this.addAnimal( newAnimal );
                     newAnimals.add( newAnimal );
                 }
+                else break;
             }
             else break;
         }

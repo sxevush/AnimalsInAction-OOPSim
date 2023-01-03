@@ -6,6 +6,7 @@ public abstract class AbstractWorldMap {
     protected final int width;
     protected final int height;
     public int minBreedEnergy;
+    public int energyToBreed;
     private int newPlants;
     private int plantEnergy = 5;
     public int startingAnimalEnergy = 20;
@@ -99,7 +100,9 @@ public abstract class AbstractWorldMap {
     public void setMinBreedEnergy(int minBreedEnergy){
         this.minBreedEnergy = minBreedEnergy;
     }
-
+    public void setEnergyToBreed(int energyToBreed){
+        this.energyToBreed = energyToBreed;
+    }
     public int getPlantEnergy() {
         return plantEnergy;
     }
