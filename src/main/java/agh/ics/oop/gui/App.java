@@ -14,22 +14,22 @@ import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 
+import java.util.Objects;
+
 public class App extends Application {
     private AbstractWorldMap map; //TODO ustawić menu jakies i setter
     private SimulationEngine engine;
     private int fieldSize = 30;
     private int windowHeight;
     private int windowWidth;
-
     private GridPane grid = new GridPane();
-    private String title = "Symulacja";
-
+    private String title = "Animals In Action";
 
     public App(String mapType,int width, int height, int numAnimals, int numPlants, int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations){
-        if(mapType=="hell"){
+        if(Objects.equals(mapType, "hell")){
             this.map = new Hell(width, height);
         }
-        else if(mapType=="globe"){
+        else if(Objects.equals(mapType, "globe")){
             this.map = new Globe(width, height);
         }
         windowHeight = fieldSize * (height+2);
@@ -37,7 +37,7 @@ public class App extends Application {
 
         this.engine = new SimulationEngine(map, this);
         engine.setMoveDelay(timeSleep);
-        engine.setNumberOfPlants( numPlants ); // todo wyjatki dla za duzych/ujemnych wartosci
+        engine.setNumberOfPlants( numPlants );
         engine.setWorldAge( worldAge );
         engine.setNumberOfAnimals( numAnimals );
 
@@ -46,9 +46,8 @@ public class App extends Application {
         map.setStartingAnimalEnergy( startingAnimalEnergy );
         map.setGenotypeSize( genotypeSize );
         map.setNumberOfMutations( numberOfMutations );
-
-
     }
+
     public void start(Stage primaryStage) {
 
         newGrid();
@@ -70,11 +69,11 @@ public class App extends Application {
         });
         return stopButton;
     }
+
     public void newGrid(){
 
         int width = fieldSize ;
         int height = fieldSize; //TODO rozmiar pojedynczego pola
-
         int objectSize = fieldSize;
 
         grid.setGridLinesVisible(true);
@@ -86,21 +85,20 @@ public class App extends Application {
         GridPane.setHalignment(startLabel, HPos.CENTER);
         grid.add(startLabel, 0, 0);
 
-
         for (int i = 1; i <= map.getWidth(); i++){
             Label label = new Label(Integer.toString(i -1));
             grid.getColumnConstraints().add(new ColumnConstraints(width));
             grid.add(label, i, 0);
             GridPane.setHalignment(label, HPos.CENTER);
-
         }
+
         for (int i = 1 ; i <=  map.getHeight(); i++){
             Label label = new Label(Integer.toString(i - 1));
             grid.getRowConstraints().add(new RowConstraints(height));
             grid.add(label, 0,i);
             GridPane.setHalignment(label, HPos.CENTER);
-
         }
+
         for (int x = 0; x < map.getWidth(); x++){
             for (int y = 0; y < map.getHeight(); y++){
                 Vector2d position = new Vector2d(x, y);
@@ -113,6 +111,7 @@ public class App extends Application {
             }
         }
     }
+
     public void refresh() {
         Platform.runLater( () -> {
             this.grid.getChildren().clear();

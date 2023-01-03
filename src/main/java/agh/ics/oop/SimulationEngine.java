@@ -17,30 +17,20 @@ public class SimulationEngine implements Runnable {
     private final ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
     private final HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
 
-    public SimulationEngine(AbstractWorldMap map) {
-        this.map = map;
-        this.elements = new WorldMapElements(map);
-    }
     public SimulationEngine(AbstractWorldMap map, App app) {
         this.map = map;
         this.elements = new WorldMapElements(map);
         this.app = app;
     }
+
     public void setWorldAge(int worldAge) {
         this.worldAge = worldAge;
     }
-
-    public void setNumberOfAnimals(int numberOfAnimals) {
-        this.numberOfAnimals = numberOfAnimals; //todo wyjatek zeby nie bylo wiecej niz sie da
+    public void setNumberOfAnimals(int numberOfAnimals) { this.numberOfAnimals = numberOfAnimals; }
+    public void setNumberOfPlants(int numberOfPlants) { this.numberOfPlants = numberOfPlants; }
+    public void setMoveDelay(int delay){
+        this.moveDelay = delay;
     }
-
-
-    public void setNumberOfPlants(int numberOfPlants) {
-        this.numberOfPlants = numberOfPlants; //todo wyjatek zeby nie bylo wiecej niz sie da
-    }
-
-
-
 
     private void randomizePositions(AbstractWorldMap map, Collection<Vector2d> positions, int numberOfElements) {
         Random rand = new Random();
@@ -60,14 +50,12 @@ public class SimulationEngine implements Runnable {
         }
     }
 
-    private void placePlants(AbstractWorldMap map) { // moze mozna dac do AbstractWorldMap?
+    private void placePlants(AbstractWorldMap map) {
         randomizePositions( map, initialPlantPositions, numberOfPlants );
-        System.out.println( numberOfPlants);
         for (Vector2d position : initialPlantPositions) {
             map.placePlant( map.getPlantEnergy(), position );
         }
     }
-
 
     public void run() {
         placeAnimals( map );
@@ -83,7 +71,6 @@ public class SimulationEngine implements Runnable {
                 map.addNewPlants();
                 app.refresh();
             } catch (InterruptedException e) {
-
                 throw new RuntimeException(e);
             }
         }
@@ -99,8 +86,5 @@ public class SimulationEngine implements Runnable {
             ArrayList<Animal> newAnimals = field.breed();
             elements.addAnimals( newAnimals );
         } );
-    }
-    public void setMoveDelay(int delay){
-        this.moveDelay = delay;
     }
 }

@@ -12,15 +12,6 @@ public class Genotype {
     int genotypeSize;
     int numberOfMutations;
 
-
-    public void setNumberOfMutations(int numberOfMutations) {
-        this.numberOfMutations = numberOfMutations;
-    }
-
-    public void setGenotypeSize(int genotypeSize) {
-        this.genotypeSize = genotypeSize;
-    }
-
     public Genotype(int genotypeSize, int numberOfMutations) {
         Random rand = new Random();
         newGenotype( rand, genotypeSize );

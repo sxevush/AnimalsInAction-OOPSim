@@ -22,39 +22,44 @@ public class Field {
         this.map = map;
     }
 
+    public String getImagePath() {
+        if(this.isEmpty()){
+            return "src/main/resources/empty.png";
+        }
+        if(animals.size()>0){
+            if(animals.size()==1) {
+                return "src/main/resources/oneAnimal.png";
+            }
+            return "src/main/resources/animal.png";
+        }
+        return "src/main/resources/plant.png";
+    }
     public int getNumberOfDiedAnimals() {
         return numberOfDiedAnimals;
     }
-
-    public void setEnergyToBreed(int energyToBreed) {
-        this.energyToBreed = energyToBreed;
-    }
-
-    public void setStuffedAnimal(int stuffedAnimal) {
-        this.stuffedAnimal = stuffedAnimal;
-    }
-
-    public void addDiedAnimal () {
-        numberOfDiedAnimals++;
-    }
-
     public PriorityQueue<Animal> getAnimals() {
         return animals;
     }
-
+    public void setEnergyToBreed(int energyToBreed) {
+        this.energyToBreed = energyToBreed;
+    }
+    public void setStuffedAnimal(int stuffedAnimal) {
+        this.stuffedAnimal = stuffedAnimal;
+    }
     public void setAnimals(PriorityQueue<Animal> animals) {
         this.animals = animals;
     }
-
+    public void addDiedAnimal () {
+        numberOfDiedAnimals++;
+    }
+    public void addPlant(int energyValue){
+        this.plant = energyValue;
+    }
     public void addAnimal(Animal animal){
         animals.add(animal);
     }
     public void removeAnimal(Animal animal){
         animals.remove(animal);
-    }
-
-    public void addPlant(int energyValue){
-        this.plant = energyValue;
     }
 
     public boolean isEmpty(){
@@ -63,7 +68,6 @@ public class Field {
 
     public String toString(){
         if(animals.size() != 0) {
-//            return animals.peek().toString();
             return String.valueOf( animals.size() );
         }
         if (plant != 0) {
@@ -77,7 +81,6 @@ public class Field {
             animals.peek().modifyEnergy( plant );
             plant = 0;
         }
-
     }
 
     public ArrayList<Animal> breed() {
@@ -109,26 +112,5 @@ public class Field {
         }
         animals.addAll( parentsAfterBreeding );
         return newAnimals;
-    }
-
-    public Vector2d getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vector2d position) {
-        this.position = position;
-    }
-
-    public String getImagePath() {
-        if(this.isEmpty()){
-            return "src/main/resources/empty.png";
-        }
-        if(animals.size()>0){
-            if(animals.size()==1) {
-                return "src/main/resources/oneAnimal.png";
-            }
-            return "src/main/resources/animal.png";
-        }
-        return "src/main/resources/plant.png";
     }
 }

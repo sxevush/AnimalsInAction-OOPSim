@@ -14,7 +14,7 @@ public abstract class AbstractWorldMap {
     private int genotypeSize = 10;
 
     protected HashMap<Vector2d, Field> fields = new HashMap<>();
-    protected ArrayList<Field> fieldArrayList;
+    protected ArrayList<Field> fieldArrayList = new ArrayList<>();
 
 
     protected AbstractWorldMap(int width, int height) {
@@ -26,31 +26,21 @@ public abstract class AbstractWorldMap {
     public void createMap (int width, int height) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                fields.put( new Vector2d( x, y ), new Field( this ));
+                Field field = new Field(this);
+                fields.put( new Vector2d( x, y ), field);
+                fieldArrayList.add(field);
             }
         }
-        List<Field> fieldList = fields.values().stream().toList();
-        fieldArrayList = new ArrayList<>(fieldList);
         Collections.shuffle( fieldArrayList );
     }
 
     public void addNewPlants() {
-        Stream<Field> fieldStream = fieldArrayList.stream()
+        fieldArrayList.stream()
                 .filter( field -> field.plant == 0 )
                 .sorted(Comparator.comparingInt( Field::getNumberOfDiedAnimals )
-                        .reversed());
-
-        fieldStream.limit( newPlants )
-                .forEach( field -> field.addPlant( plantEnergy ) );
-
-
-//        Stream<Field> fieldStream = fields.values().parallelStream().parallel()
-//                .filter( field -> field.plant == 0 )
-//                .sorted(Comparator.comparingInt( Field::getNumberOfDiedAnimals )
-//                        .reversed());
-//        fieldStream.
-//                limit( newPlants ).
-//                forEach( field -> field.addPlant( plantEnergy ) );
+                        .reversed())
+                        .limit( newPlants )
+                        .forEach( field -> field.addPlant( plantEnergy ) );
     }
 
     public int getStartingAnimalEnergy() {

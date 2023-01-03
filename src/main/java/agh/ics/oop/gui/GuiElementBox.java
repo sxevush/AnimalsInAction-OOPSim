@@ -16,7 +16,7 @@ public class GuiElementBox {
     private VBox vBox = new VBox();
 
     public GuiElementBox(String path, int size){
-        try{
+        try {
             Image image = new Image(new FileInputStream(path));
             this.image = new ImageView(image);
             this.image.setFitWidth(size);
@@ -30,8 +30,8 @@ public class GuiElementBox {
             throw new RuntimeException("File not found.");
         }
     }
+
     public VBox getVBox(){
         return this.vBox;
     }
-
 }

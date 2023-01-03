@@ -5,20 +5,16 @@ import java.util.*;
 public class WorldMapElements {
     private ArrayList<Animal> animals = new ArrayList<>();
     private AbstractWorldMap map;
-    protected HashMap<Vector2d, Field> fields = new HashMap<>();
-
-    public ArrayList<Animal> getAnimals() {
-        return animals;
-    }
-    public void addAnimals(ArrayList<Animal> newAnimals) {
-        animals.addAll( newAnimals );
-    }
+    protected HashMap<Vector2d, Field> fields;
 
     public WorldMapElements(AbstractWorldMap map){
         this.map = map;
         this.fields = map.fields;
     }
 
+    public void addAnimals(ArrayList<Animal> newAnimals) {
+        animals.addAll( newAnimals );
+    }
     public void addAnimal(Animal animal){
         animals.add(animal);
     }
@@ -29,7 +25,6 @@ public class WorldMapElements {
         }
     }
 
-
     public void cleanMap() {
         for (Animal animal : animals) {
             if (animal.getEnergy() == 0) {
@@ -38,7 +33,4 @@ public class WorldMapElements {
         }
         animals.removeIf( animal -> animal.getEnergy() == 0 );
     }
-
-
-
 }
