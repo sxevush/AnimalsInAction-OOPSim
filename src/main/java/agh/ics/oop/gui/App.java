@@ -24,8 +24,11 @@ public class App extends Application {
     private int windowWidth;
     private GridPane grid = new GridPane();
     private String title = "Animals In Action";
+    private Statistics statistics;
 
-    public App(String mapType,int width, int height, int numAnimals, int numPlants, int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations){
+    public App(String mapType, int width, int height, int numAnimals, int numPlants,
+               int startingAnimalEnergy, int breedEnergy, int numPlantsPerYear,
+               int plantEnergy, int timeSleep, int worldAge, int genotypeSize, int numberOfMutations){
         if(Objects.equals(mapType, "hell")){
             this.map = new Hell(width, height);
         }
@@ -46,6 +49,8 @@ public class App extends Application {
         map.setStartingAnimalEnergy( startingAnimalEnergy );
         map.setGenotypeSize( genotypeSize );
         map.setNumberOfMutations( numberOfMutations );
+
+        this.statistics = new Statistics(this.map, this, this.engine);
     }
 
     public void start(Stage primaryStage) {
@@ -69,6 +74,21 @@ public class App extends Application {
         });
         return stopButton;
     }
+
+    public Button statisticsButton(Stage primaryStage){
+        Button stopButton = new Button("Statistics");
+        stopButton.setOnAction((action) -> {
+            Stage stage = new Stage();
+            try {
+                statistics.start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return stopButton;
+    }
+
+
 
     public void newGrid(){
 
