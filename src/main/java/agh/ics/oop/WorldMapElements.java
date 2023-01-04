@@ -2,6 +2,9 @@ package agh.ics.oop;
 
 import java.util.*;
 
+// WorldMapElements to klasa przechowująca informacje o obiektach na mapie.
+// Zawiera listę obiektów typu Animal, a także instancję mapy, na której te obiekty się znajdują.
+
 public class WorldMapElements {
     private ArrayList<Animal> animals = new ArrayList<>();
     private AbstractWorldMap map;
@@ -25,21 +28,28 @@ public class WorldMapElements {
         animals.add(animal);
     }
 
+
+    // Metoda move wywołuje metodę move dla każdego obiektu typu Animal znajdującego się na liście.
     public void move() {
         for (Animal animal : animals) {
             animal.move();
         }
     }
 
+    // Metoda cleanMap usuwa z listy zwierząt te, których poziom energii jest
+    // równy zero lub mniejszy oraz usuwa te obiekty z mapy. Wiek zwierząt, które umarły,
+    // jest dodawany do listy ageOfDiedAnimals.
     public void cleanMap() {
-        for (Animal animal : animals) {
+        Iterator<Animal> iterator = animals.iterator();
+        while (iterator.hasNext()) {
+            Animal animal = iterator.next();
             if (animal.getEnergy() <= 0) {
                 ageOfDiedAnimals.add(animal.getAge());
                 animal.setDied(true);
                 map.remove( animal );
+                iterator.remove();
             }
         }
-        animals.removeIf( animal -> animal.getEnergy() <= 0 );
     }
 
 }

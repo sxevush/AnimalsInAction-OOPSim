@@ -5,6 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+// Statistics to klasa odpowiedzialna za przetwarzanie statystyk z symulacji.
+// Posiada pola zawierające mapę oraz obiekt klasy SimulationEngine,
+// z którego pobiera dane potrzebne do obliczania statystyk.
+
 public class Statistics {
 
     private AbstractWorldMap map;
@@ -15,11 +19,17 @@ public class Statistics {
         this.engine = engine;
     }
 
+    // Metoda countAllAnimals zwraca liczbę wszystkich zwierząt na mapie.
     public int countAllAnimals() { return engine.getElements().getSize(); }
+
+    // Metoda countAllPlants zwraca liczbę roślin na mapie.
     public long countAllPlants() { return map.getFieldArrayList().stream().filter(field -> field.getPlant() != 0).count(); }
+
+    // Metoda countFreeFields zwraca liczbę wolnych pól na mapie.
     public long countFreeFields() { return map.getFieldArrayList().stream().filter(field -> field.getPlant() == 0)
             .filter(field -> field.getAnimals().size() == 0).count(); }
 
+    // Metoda mostPopularGenotype zwraca najczęściej występujący genotyp wśród zwierząt.
     public String mostPopularGenotype() {
         ArrayList<String> genotypes = new ArrayList<>();
         ArrayList<Animal> animals = engine.getElements().getAnimals();
@@ -32,6 +42,7 @@ public class Statistics {
         return "brak zwierzakow";
     }
 
+    // Metoda avgEnergyLevel zwraca średni poziom energii zwierząt na mapie.
     public double avgEnergyLevel() {
         ArrayList<Animal> animals = engine.getElements().getAnimals();
         return Math.round(animals.stream().
@@ -40,6 +51,7 @@ public class Statistics {
                 orElse(0.0)*100.0)/100.0;
     }
 
+    // Metoda avgAnimalAge zwraca średni wiek martwych zwierząt.
     public double avgAnimalAge() {
         return Math.round(engine.getElements().
                 getAgeOfDiedAnimals().
@@ -49,6 +61,7 @@ public class Statistics {
                 orElse(0.0)*100.0)/100.0;
     }
 
+    // Metoda findMostCommonElement zwraca element, który występuje najczęściej w liście.
     public String findMostCommonElement(ArrayList<String> list) {
         // hashmap to store the frequency of element
         Map<String, Integer> hm = new HashMap<>();
@@ -61,6 +74,7 @@ public class Statistics {
         return Collections.max(hm.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
     }
 
+    // Metoda makeData tworzy plik tekstowy zawierający statystyki z symulacji.
     public void makeData(String fileName) throws IOException {
         String[][] data = {{"Most common genotype: ", mostPopularGenotype()},
                 {"Number of animals: ", Integer.toString(countAllAnimals())},
@@ -73,6 +87,7 @@ public class Statistics {
         writeFile(fileName, data);
     }
 
+    // Metoda writeFile zapisuje dane w podanym pliku tekstowym.
     public static void writeFile(String fileName, String[][] data) {
         ArrayList<String> out = new ArrayList<>();
 
@@ -93,5 +108,4 @@ public class Statistics {
             System.out.println("System nie moze otworzyc pliku. ");
         }
     }
-
 }

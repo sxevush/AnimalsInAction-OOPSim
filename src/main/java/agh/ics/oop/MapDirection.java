@@ -1,6 +1,12 @@
 package agh.ics.oop;
 
-
+// MapDirection to enum zawierający 8 kierunków. Każdy z kierunków ma swoją nazwę
+// (NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST) oraz skrót (N, NE, E, SE, S, SW, W, NW).
+// MapDirection posiada również kilka metod:
+// toString() - zwraca skrót kierunku
+// toUnitVector() - zwraca wektor jednostkowy odpowiadający kierunkowi
+// next() - zwraca kierunek po prawej stronie od obecnego kierunku
+// previous() - zwraca kierunek po lewej stronie od obecnego kierunku
 
 public enum MapDirection {
     NORTH,

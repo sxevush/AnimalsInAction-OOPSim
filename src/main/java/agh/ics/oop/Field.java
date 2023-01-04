@@ -2,6 +2,9 @@ package agh.ics.oop;
 
 import java.util.*;
 
+// Klasa Field reprezentuje pojedyncze pole na mapie.
+// Zawiera informacje o roślinie i zwierzętach znajdujących się na tym polu oraz o ilości martwych zwierząt.
+
 public class Field {
     private int energyToBreed;
     private int minBreedEnergy;
@@ -23,6 +26,7 @@ public class Field {
         this.minBreedEnergy = map.minBreedEnergy;
     }
 
+    // Metoda getImagePath() zwraca ścieżkę do obrazka odpowiadającego stanowi pola.
     public String getImagePath() {
         if(this.isEmpty()){
             return "src/main/resources/empty2.png";
@@ -50,6 +54,7 @@ public class Field {
         }
         return "src/main/resources/plant2.png";
     }
+
     public int getNumberOfDiedAnimals() {
         return numberOfDiedAnimals;
     }
@@ -72,7 +77,6 @@ public class Field {
     public void removeAnimal(Animal animal){
         animals.remove(animal);
     }
-
     public boolean isEmpty(){
         return animals.size() == 0 && plant == 0;
     }
@@ -87,6 +91,7 @@ public class Field {
         return " ";
     }
 
+    // Metoda eat() pozwala na zjedzenie rośliny przez najmocniejsze zwierzę na polu.
     public void eat() {
         if (animals.peek() != null && plant != 0) {
             animals.peek().modifyEnergy( plant );
@@ -96,6 +101,9 @@ public class Field {
         }
     }
 
+    // Metoda breed() pozwala na rozmnożenie zwierząt znajdujących się na polu.
+    // Jeśli zwierzęta spełniają określone warunki (mają odpowiednią ilość energii)
+    // to mogą zostać utworzone ich potomki.
     public ArrayList<Animal> breed() {
         ArrayList<Animal> parentsAfterBreeding = new ArrayList<>();
         ArrayList<Animal> newAnimals = new ArrayList<>();
@@ -130,6 +138,7 @@ public class Field {
         return newAnimals;
     }
 
+    // Metoda getAnimalInfo przekazuje najważniejsze informacje o wybranym do śledzenia zwierzęciu w aplikacji.
     public String getAnimalInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append("Animals: ");

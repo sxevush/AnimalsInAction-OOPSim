@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+// Klasa Genotype reprezentuje genotyp zwierzęcia. Posiada listę genów List<Integer> genotype,
+// która przechowuje informację o kierunku ruchu zwierzęcia na najbliższej turze.
+// Klasa ta zawiera metody służące do tworzenia i mutacji genotypu zwierzęcia.
+
 public class Genotype {
     private List<Integer> genotype = new ArrayList<>();
     private int pointer = 0;
@@ -13,6 +17,8 @@ public class Genotype {
     int genotypeSize;
     int numberOfMutations;
 
+    // Konstruktor Genotype(int genotypeSize, int numberOfMutations) tworzy nowy,
+    // losowy genotyp o długości genotypeSize i numberOfMutations mutacjach.
     public Genotype(int genotypeSize, int numberOfMutations) {
         Random rand = new Random();
         newGenotype( rand, genotypeSize );
@@ -20,6 +26,10 @@ public class Genotype {
         this.numberOfMutations = numberOfMutations;
     }
 
+    // Konstruktor Genotype(Animal parent1, Animal parent2, int genotypeSize, int numberOfMutations)
+    // tworzy genotyp potomka na podstawie genotypów rodziców.
+    // Genotyp potomka jest tworzony poprzez połączenie fragmentów genotypów rodziców.
+    // Następnie następuje mutacja genotypu potomka zgodnie z ustawionym licznikiem numberOfMutations.
     public Genotype(Animal parent1, Animal parent2, int genotypeSize, int numberOfMutations){
         this.genotypeSize = genotypeSize;
         this.numberOfMutations = numberOfMutations;
@@ -86,6 +96,10 @@ public class Genotype {
         }
     }
 
+    // Metoda next() zwraca kierunek ruchu zwierzęcia na najbliższej turze.
+    // Kierunek ten jest wybierany na podstawie genu o indeksie pointer,
+    // a następnie przesuwana jest wartość pointer. W 20% przypadków wartość pointer
+    // jest losowana ponownie, co pozwala na losowe zmiany kierunku ruchu zwierzęcia.
     public Integer next() {
         // nieco szalenstwa - w 20% przypadkow zwierzak przeskakuje do losowego genu
         pointer++;

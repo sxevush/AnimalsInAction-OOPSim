@@ -21,6 +21,13 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
+// Klasa App jest klasą reprezentującą okno aplikacji i wyświetlającą grafikę
+// oraz interfejs użytkownika. Tworzy ona instancję klasy SimulationEngine
+// i uruchamia wątek z jej implementacją metody run().
+// Pozwala ona na uruchomienie widoku symulacji, w którym zawarte są m.in. statystyki danej mapy,
+// możliwość śledzenia wybranego zwierzęcia oraz sprawdzenie energii zwierząt na danym polu poprzez
+// najechanie na nie.
+
 public class App extends Application {
     private AbstractWorldMap map;
     private SimulationEngine engine;
@@ -31,7 +38,6 @@ public class App extends Application {
     Label animalInfoLabel = new Label("");
     Label selectedAnimalInfoLabel = new Label("");
     private Animal selectedAnimal;
-
 
     public App(String mapType, int width, int height, int numAnimals, int numPlants,
                int startingAnimalEnergy, int minBreedEnergy, int energyToBreed, int numPlantsPerYear,
@@ -61,6 +67,9 @@ public class App extends Application {
 
     }
 
+    // Metoda start() definiuje okno aplikacji za pomocą instancji klasy Stage,
+    // ustawia na nim widok za pomocą instancji klasy Scene,
+    // a następnie wyświetla okno za pomocą metody show().
     public void start(Stage primaryStage) {
         newGrid();
         VBox vBox = new VBox(
@@ -88,6 +97,7 @@ public class App extends Application {
         thread.start();
     }
 
+    // Metoda stopButton() tworzy przycisk, który po kliknięciu zamyka okno aplikacji i kończy działanie wątku.
     public Button stopButton(Stage primaryStage) {
         Button stopButton = new Button("Stop");
         stopButton.setOnAction((action) -> {
@@ -97,18 +107,21 @@ public class App extends Application {
         return stopButton;
     }
 
+    // Metoda pauseButton() tworzy przycisk, który po kliknięciu wstrzymuje lub wznawia działanie wątku.
     public Button pauseButton() {
         Button pauseButton = new Button("Pause/Unpause");
         pauseButton.setOnAction((action) -> engine.pause());
         return pauseButton;
     }
 
+    // Metoda statisticsButton() tworzy przycisk, który po kliknięciu wyświetla statystyki dotyczące symulacji.
     public Button statisticsButton() {
         Button statisticsButton = new Button("Show statistics");
         statisticsButton.setOnAction(action -> showStatistics());
         return statisticsButton;
     }
 
+    // Metoda showStatistics() tworzy zawartość okienka statystyk.
     private void showStatistics() {
         Statistics statistics = new Statistics(map, engine);
 
@@ -164,7 +177,7 @@ public class App extends Application {
         window.show();
     }
 
-
+    // Metoda newGrid() tworzy siatkę reprezentującą mapę oraz umieszcza na niej odpowiednie komponenty.
     public void newGrid() {
 
         int width = fieldSize;
@@ -203,6 +216,12 @@ public class App extends Application {
                 grid.add(box, x + 1, y + 1);
                 GridPane.setHalignment(box, HPos.CENTER);
 
+                // Kiedy wskaźnik myszy wejdzie na pole zawierające etykietę,
+                // zostanie wywołana metoda setOnMouseEntered. W tej metodzie pobierany
+                // jest obiekt typu Field z mapy i ustawiana jest informacja o zwierzęciach
+                // znajdujących się na tym polu. Kiedy wskaźnik myszy opuści pole zawierające etykietę,
+                // zostanie wywołana metoda setOnMouseExited, która ustawia informację o zwierzęciu na pusty
+                // ciąg znaków. Na końcu etykieta jest dodawana do siatki (obiektu typu GridPane).
                 Label label = new Label();
                 label.setMinSize(width, height);
                 label.setMaxSize(width, height);
@@ -220,6 +239,14 @@ public class App extends Application {
             }
         }
         windowHeight += 170;
+
+        // Obsługa zdarzenia kliknięcia myszy dla siatki (obiektu typu GridPane).
+        // Po kliknięciu myszą, pobierana jest pozycja kliknięcia i na podstawie tej
+        // pozycji obliczane są współrzędne pola klikniętego. Następnie pobierany jest
+        // obiekt typu Field z mapy i sprawdzane, czy na tym polu znajduje się jakiś zwierzę.
+        // Jeśli tak, to pobierany jest dowolny zwierzak z tego pola i ustawiany jako zaznaczony
+        // (atrybut selectedAnimal). W końcu ustawiana jest szczegółowa informacja o zaznaczonym
+        // zwierzęciu w odpowiedniej etykiecie.
         grid.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             int x = (int) event.getX() / fieldSize;
             int y = (int) event.getY() / fieldSize;

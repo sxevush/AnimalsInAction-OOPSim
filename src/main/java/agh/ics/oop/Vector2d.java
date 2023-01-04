@@ -1,5 +1,11 @@
 package agh.ics.oop;
 
+// Vector2d to klasa reprezentująca wektor na dwuwymiarowej płaszczyźnie.
+// Posiada pola x i y odpowiadające współrzędnym wektora.
+// Wektor może być dodawany, odejmowany, porównywany z innymi wektorami
+// oraz przekształcany na wektor przeciwny. Możliwe jest także znajdowanie
+// wektora o maksymalnych lub minimalnych współrzędnych pomiędzy dwoma wektorami.
+
 public record Vector2d(int x, int y) {
 
     public String toString() {

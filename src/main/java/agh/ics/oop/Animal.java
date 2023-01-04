@@ -3,6 +3,9 @@ package agh.ics.oop;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+// Klasa Animal reprezentuje zwierzę na mapie. Zawiera informacje
+// o jego pozycji, orientacji, energii, wieku, ilości dzieci, ilości zjedzonych roślin oraz genomie.
+
 public class Animal {
     Random random = new Random();
     private MapDirection orientation = MapDirection.values()[random.nextInt(MapDirection.values().length)];
@@ -15,7 +18,11 @@ public class Animal {
     private Genotype genotype;
     private boolean died = false;
 
-
+    // Metoda Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy) -
+    // konstruktor tworzący nowe zwierzę, przyjmujący trzy argumenty: obiekt klasy AbstractWorldMap
+    // reprezentujący mapę, na której zwierzę będzie się poruszać, obiekt klasy Vector2d
+    // reprezentujący pozycję startową zwierzęcia oraz liczbę całkowitą startingEnergy
+    // reprezentującą początkową ilość energii zwierzęcia. Tworzony jest również obiekt klasy Genotype dla zwierzęcia.
     public Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy){
         this.map = map;
         this.position = startingPosition;
@@ -23,6 +30,8 @@ public class Animal {
         this.energy = startingEnergy;
     }
 
+    // Konstruktor Animal(Animal parent1, Animal parent2, int startingEnergy)
+    // tworzy nowe zwierzę będące potomkiem dwóch innych zwierząt.
     public Animal(Animal parent1, Animal parent2, int startingEnergy){
         this.map = parent1.map;
         this.position = parent1.position;
@@ -59,6 +68,7 @@ public class Animal {
     public void addEatenPlant() { plantsEaten += 1; }
 
 
+    // Metoda move() pozwala na przesunięcie zwierzęcia o jedno pole w kierunku podanym przez jego orientację.
     public void move() {
         Vector2d oldPosition = position;
         Integer turn = this.genotype.next();
@@ -76,10 +86,12 @@ public class Animal {
 
     }
 
+    // Metoda modifyEnergy(int energy) pozwala na zmianę ilości energii zwierzęcia o podaną wartość.
     public void modifyEnergy(int energy){
         this.energy += energy; //można również odejmować energię przy pomocy tej funkcji dając wartość ujemną jako argument
     }
 
+    // Metoda positionChanged(Vector2d oldPosition) aktualizuje informacje o pozycji zwierzęcia w mapie.
     public void positionChanged(Vector2d oldPosition) {
         PriorityQueue<Animal> animals = map.fields.get( oldPosition ).getAnimals();
         if (animals.remove(this)) {
@@ -88,6 +100,7 @@ public class Animal {
         map.place(this);
     }
 
+    // Metoda getDetailedAnimalInfo() zwraca szczegółowe informacje o zwierzęciu w postaci ciągu znaków.
     public String getDetailedAnimalInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append("Genom: ");

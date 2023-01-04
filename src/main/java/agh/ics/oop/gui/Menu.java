@@ -10,11 +10,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+// Klasa Menu jest klasą rozszerzającą (extending) klasę Application i dziedziczącą po niej metodę start().
+// Metoda ta jest odpowiedzialna za utworzenie i wyświetlenie menu aplikacji.
+
 public class Menu extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
+    // Metoda start(Stage primaryStage) tworzy kontener GridPane,
+    // w którym umieszczane są elementy interfejsu użytkownika
+    // - Labele (mapLabel, widthLabel, heightLabel, itp.), pola tekstowe (widthField, heightField, itp.),
+    // ComboBox (mapComboBox) oraz przyciski (exitButton, startButton).
+    // Następnie dodaje te elementy do kontenera za pomocą metody addElementsToRoot().
+    // Ustawia wyśrodkowanie kontenera (setAlignment(Pos.CENTER)).
+    // Tworzy i ustawia scenę dla podanego primaryStage, używając metody setScene().
+    // Ustawia obsługę zdarzenia dla przycisku exitButton - zamyka aplikację po naciśnięciu (System.exit(0)).
+    // Ustawia obsługę zdarzenia dla przycisku startButton za pomocą metody setStartButton().
     @Override
     public void start(Stage primaryStage) {
 
@@ -90,6 +102,10 @@ public class Menu extends Application {
                 genotypeSizeField, numMutationsField, startButton);
     }
 
+    // metoda setStartButton(...) ustawia obsługę zdarzenia dla przycisku startButton
+    // w momencie naciśnięcia tego przycisku tworzony jest nowy wątek (Thread), w którym uruchamiana jest metoda run()
+    // klasy World. Metoda ta tworzy nowy obiekt klasy World na podstawie pól tekstowych z interfejsu użytkownika
+    // (mapComboBox, widthField, heightField, itp.) oraz uruchamia symulację świata (metoda simulate()).
     private void setStartButton(ComboBox<String> mapComboBox, TextField widthField, TextField heightField,
                                 TextField numAnimalsField, TextField numPlantsField, TextField startingAnimalEnergyField,
                                 TextField minBreedEnergyField, TextField energyToBreedField, TextField numPlantsPerYearField, TextField plantEnergyField,
@@ -173,6 +189,7 @@ public class Menu extends Application {
         });
     }
 
+    // metoda setScene(Stage stage, Parent root) ustawia scenę dla podanego stage z użyciem podanego kontenera (root)
     private static void setScene(Stage primaryStage, GridPane root) {
         Scene scene = new Scene(root, 400, 520);
         primaryStage.setScene(scene);
@@ -180,6 +197,7 @@ public class Menu extends Application {
         primaryStage.show();
     }
 
+    // metoda addElementsToRoot(GridPane root, Node... nodes) dodaje podane elementy (nodes) do kontenera (root)
     private static void addElementsToRoot(GridPane root, Label mapLabel, ComboBox<String> mapComboBox,
                                           Label widthLabel, TextField widthField, Label heightLabel,
                                           TextField heightField, Label numAnimalsLabel, TextField numAnimalsField,
@@ -224,6 +242,7 @@ public class Menu extends Application {
         root.add(startButton, 0, 14);
     }
 
+    // metoda getGridPane() tworzy i zwraca nowy kontener typu GridPane
     private static GridPane getGridPane() {
         GridPane root = new GridPane();
         root.setPadding(new Insets(10));
