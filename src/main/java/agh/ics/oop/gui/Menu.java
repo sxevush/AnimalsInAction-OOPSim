@@ -1,5 +1,4 @@
 package agh.ics.oop.gui;
-import agh.ics.oop.AbstractWorldMap;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
-    private App app;
     public static void main(String[] args) {
         launch(args);
     }
@@ -84,7 +82,7 @@ public class Menu extends Application {
 
         setScene(primaryStage, root);
 
-        exitButton.setOnAction(event -> {System.exit(0);});
+        exitButton.setOnAction(event -> System.exit(0));
 
         setStartButton(mapComboBox, widthField, heightField, numAnimalsField,
                 numPlantsField, startingAnimalEnergyField, minBreedEnergyField, energyToBreedField,
@@ -100,19 +98,19 @@ public class Menu extends Application {
         startButton.setOnAction(event -> {
             // Pobierz wartości parametrów z pól tekstowych
             String map = mapComboBox.getValue();
-            int width = 0;
-            int height = 0;
-            int numAnimals = 0;
-            int numPlants = 0;
-            int startingAnimalEnergy = 0;
-            int minBreedEnergy = 0;
-            int energyToBreed = 0;
-            int numPlantsPerYear = 0;
-            int plantEnergy = 0;
-            int timeSleep = 0;
-            int worldAge = 0;
-            int genotypeSize = 0;
-            int numberOfMutations = 0;
+            int width;
+            int height;
+            int numAnimals;
+            int numPlants;
+            int startingAnimalEnergy;
+            int minBreedEnergy;
+            int energyToBreed;
+            int numPlantsPerYear;
+            int plantEnergy;
+            int timeSleep;
+            int worldAge;
+            int genotypeSize;
+            int numberOfMutations;
             try {
                 width = Integer.parseInt(widthField.getText());
                 if (width < 0 || width > 50) {
@@ -238,10 +236,10 @@ public class Menu extends Application {
                                  int numPlants, int startingAnimalEnergy, int minBreedEnergy, int energyToBreed,
                                  int numPlantsPerYear, int plantEnergy, int timeSleep, int worldAge,
                                  int genotypeSize, int numberOfMutations) {
-        this.app = new App(map, width, height, numAnimals, numPlants,
+        App app = new App(map, width, height, numAnimals, numPlants,
                 startingAnimalEnergy, minBreedEnergy, energyToBreed, numPlantsPerYear, plantEnergy,
                 timeSleep, worldAge, genotypeSize, numberOfMutations);
-        this.app.start(new Stage());
+        app.start(new Stage());
     }
 }
 

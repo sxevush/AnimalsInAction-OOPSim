@@ -6,12 +6,18 @@ public class WorldMapElements {
     private ArrayList<Animal> animals = new ArrayList<>();
     private AbstractWorldMap map;
     protected HashMap<Vector2d, Field> fields;
+    private List<Integer> ageOfDiedAnimals = new ArrayList<>();
 
     public WorldMapElements(AbstractWorldMap map){
         this.map = map;
         this.fields = map.fields;
     }
 
+    public ArrayList<Animal> getAnimals() { return animals; }
+    public List<Integer> getAgeOfDiedAnimals() { return ageOfDiedAnimals; }
+    public int getSize(){
+        return this.animals.size();
+    }
     public void addAnimals(ArrayList<Animal> newAnimals) {
         animals.addAll( newAnimals );
     }
@@ -27,13 +33,13 @@ public class WorldMapElements {
 
     public void cleanMap() {
         for (Animal animal : animals) {
-            if (animal.getEnergy() == 0) {
+            if (animal.getEnergy() <= 0) {
+                ageOfDiedAnimals.add(animal.getAge());
+                animal.setDied(true);
                 map.remove( animal );
             }
         }
-        animals.removeIf( animal -> animal.getEnergy() == 0 );
+        animals.removeIf( animal -> animal.getEnergy() <= 0 );
     }
-    public int getSize(){
-        return this.animals.size();
-    }
+
 }

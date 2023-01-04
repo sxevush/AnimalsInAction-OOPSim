@@ -1,7 +1,6 @@
 package agh.ics.oop;
 
 import agh.ics.oop.gui.App;
-import javafx.application.Platform;
 
 import java.util.*;
 
@@ -17,8 +16,8 @@ public class SimulationEngine implements Runnable {
     private boolean stopped = false;
     private boolean paused = false;
 
-    private final ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
-    private final HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
+    private ArrayList<Vector2d> initialAnimalPositions = new ArrayList<>(); // moga sie powtarzac pozycje
+    private HashSet<Vector2d> initialPlantPositions = new HashSet<>(); // nie moga sie powtyarzac pozycje
 
     public SimulationEngine(AbstractWorldMap map, App app) {
         this.map = map;
@@ -26,6 +25,8 @@ public class SimulationEngine implements Runnable {
         this.app = app;
     }
 
+    public int getWorldAge() { return worldAge; }
+    public WorldMapElements getElements() { return elements; }
     public void setWorldAge(int worldAge) {
         this.worldAge = worldAge;
     }
@@ -63,9 +64,8 @@ public class SimulationEngine implements Runnable {
     public void run() {
         placeAnimals( map );
         placePlants( map );
-
         for (int i = 0; i < worldAge; i++) {
-            if(elements.getSize()!=0 && !stopped) {
+            if (!stopped) {
                 try {
                     while(paused){System.out.print("");}
                     Thread.sleep(moveDelay);
@@ -79,7 +79,7 @@ public class SimulationEngine implements Runnable {
                     throw new RuntimeException(e);
                 }
             }
-            else{break;}
+            else break;
         }
 
 
@@ -101,5 +101,4 @@ public class SimulationEngine implements Runnable {
             elements.addAnimals( newAnimals );
         } );
     }
-
 }

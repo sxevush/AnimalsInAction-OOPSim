@@ -10,7 +10,10 @@ public class Animal {
     private Vector2d position;
     private int energy;
     private int age = 0; //licznik tur, które przeżyło zwierzę
+    private int children = 0;
+    private int plantsEaten = 0;
     private Genotype genotype;
+    private boolean died = false;
 
 
     public Animal(AbstractWorldMap map, Vector2d startingPosition, int startingEnergy){
@@ -31,12 +34,13 @@ public class Animal {
         for (int i = 0 ; i < turn ; i++) {
             orientation = orientation.next();
         }
-
     }
+
     public void setPosition(Vector2d position) {
         this.position = position;
     }
     public void setOrientation(MapDirection orientation) { this.orientation = orientation; }
+    public void setDied(boolean died) { this.died = died; }
     public Vector2d getPosition(){
         return this.position;
     }
@@ -50,6 +54,9 @@ public class Animal {
     public Genotype getGenotype(){
         return genotype;
     }
+    public int getChildren() { return children; }
+    public void addChild() { children += 1; }
+    public void addEatenPlant() { plantsEaten += 1; }
 
 
     public void move() {
@@ -62,7 +69,7 @@ public class Animal {
 
         position = position.add( orientation.toUnitVector() );
         map.checkBoundaries( this );
-        positionChanged( oldPosition ); // TODO OBSERVER
+        positionChanged( oldPosition );
 
         energy--;
         age++;
@@ -79,6 +86,28 @@ public class Animal {
             map.fields.get( oldPosition ).setAnimals( animals );
         }
         map.place(this);
+    }
+
+    public String getDetailedAnimalInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Genom: ");
+        sb.append(genotype).append("\n");
+        sb.append("Orientation: ");
+        sb.append(orientation).append("\n");
+        sb.append("Energy: ");
+        sb.append(energy).append("\n");
+        sb.append("Plants eaten: ");
+        sb.append(plantsEaten).append("\n");
+        sb.append("Children: ");
+        sb.append(children).append("\n");
+        if (died) {
+            sb.append("Animal is dead.");
+        }
+        else {
+            sb.append("Age: ");
+            sb.append(age).append("\n");
+        }
+        return sb.toString();
     }
 
     public boolean isAt(Vector2d position) {

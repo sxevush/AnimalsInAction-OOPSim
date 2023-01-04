@@ -1,9 +1,7 @@
 
 package agh.ics.oop.gui;
 
-import agh.ics.oop.Field;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -12,17 +10,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class GuiElementBox {
-    private ImageView image;
-    private VBox vBox = new VBox();
+    private VBox vBox;
 
     public GuiElementBox(String path, int size){
         try {
             Image image = new Image(new FileInputStream(path));
-            this.image = new ImageView(image);
-            this.image.setFitWidth(size);
-            this.image.setFitHeight(size);
+            ImageView image1 = new ImageView(image);
+            image1.setFitWidth(size);
+            image1.setFitHeight(size);
 
-            this.vBox = new VBox(this.image);
+            this.vBox = new VBox(image1);
             this.vBox.setAlignment(Pos.CENTER);
 
         }

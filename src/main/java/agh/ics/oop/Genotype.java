@@ -23,7 +23,10 @@ public class Genotype {
     public Genotype(Animal parent1, Animal parent2, int genotypeSize, int numberOfMutations){
         this.genotypeSize = genotypeSize;
         this.numberOfMutations = numberOfMutations;
-        int change = parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize; //todo sprawdzic czy dziala change w genotype
+        int change = 0;
+        if (parent1.getEnergy() + parent2.getEnergy() != 0) {
+            change = parent1.getEnergy()/(parent1.getEnergy() + parent2.getEnergy())*genotypeSize;
+        }
 
         double probability = Math.random();
         Genotype genotype1 = parent1.getGenotype();
@@ -46,11 +49,8 @@ public class Genotype {
             this.genotype.add(gen);
         }
 
-
-        this.pointer = rand.nextInt(genotypeSize);
-
         mutate();
-
+        this.pointer = rand.nextInt(genotypeSize);
     }
 
     private void newGenotype(Random rand, int genotypeSize) {
@@ -70,12 +70,17 @@ public class Genotype {
             int gen = genotype.get(mutation);
             double probability = Math.random();
             if (probability > 0.5) {
-                genotype.set(mutation, gen + 1);
-            } else { // todo mozna by to ulatwic - moze jakos uzyc previous? tylko to jest na liczbach a tam na enum
-                if (gen - 1 >= 0) {
-                    genotype.set(mutation, gen - 1);
-                } else {
+                if (gen + 1 > 7) {
+                    genotype.set(mutation, 0);
+                }
+                else {
+                    genotype.set(mutation, gen + 1);
+                }
+            } else {
+                if (gen - 1 < 0) {
                     genotype.set(mutation, 7);
+                } else {
+                    genotype.set(mutation, gen - 1);
                 }
             }
         }
@@ -90,5 +95,10 @@ public class Genotype {
             pointer = (int) (Math.random() * genotype.size());
         }
         return this.genotype.get(pointer);
+    }
+
+    @Override
+    public String toString() {
+        return genotype.toString();
     }
 }

@@ -3,11 +3,13 @@ package agh.ics.oop;
 import java.util.*;
 
 public class Field {
-    private int energyToBreed = 5;
-    private int minBreedEnergy = 5; //todo wieksze od energyToBreed
-    //todo setter stuffedAnimal
+    private int energyToBreed;
+    private int minBreedEnergy;
     protected Comparator<Animal> animalComparator = (a1, a2) -> {
         if (a1.getEnergy() == a2.getEnergy()) {
+            if (a1.getAge() == a2.getAge()) {
+                return a1.getChildren() - a2.getChildren();
+            }
             return a1.getAge() - a2.getAge();
         }
         return a1.getEnergy() - a2.getEnergy();
@@ -15,12 +17,9 @@ public class Field {
     private PriorityQueue<Animal> animals = new PriorityQueue<>( animalComparator );
     protected int plant;
     private int numberOfDiedAnimals = 0;
-    private AbstractWorldMap map;
-    private Vector2d position;
 
     public Field (AbstractWorldMap map) {
-        this.map = map;
-        this.energyToBreed = map.startingAnimalEnergy/2;
+        this.energyToBreed = map.energyToBreed;
         this.minBreedEnergy = map.minBreedEnergy;
     }
 
@@ -57,6 +56,7 @@ public class Field {
     public PriorityQueue<Animal> getAnimals() {
         return animals;
     }
+    public int getPlant() { return plant; }
     public void setAnimals(PriorityQueue<Animal> animals) {
         this.animals = animals;
     }
@@ -88,8 +88,10 @@ public class Field {
     }
 
     public void eat() {
-        if (animals.peek() != null) {
+        if (animals.peek() != null && plant != 0) {
             animals.peek().modifyEnergy( plant );
+            assert animals.peek() != null;
+            animals.peek().addEatenPlant();
             plant = 0;
         }
     }
@@ -112,6 +114,8 @@ public class Field {
                 if (parent2.getEnergy() >= minBreedEnergy && parent2.getAge() > 0) {
 
                     Animal newAnimal = new Animal( parent1, parent2, 2 * energyToBreed  );
+                    parent1.addChild();
+                    parent2.addChild();
                     parent1.modifyEnergy( -energyToBreed );
                     parent2.modifyEnergy( -energyToBreed );
 
@@ -125,4 +129,19 @@ public class Field {
         animals.addAll( parentsAfterBreeding );
         return newAnimals;
     }
+
+    public String getAnimalInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Animals: ");
+        sb.append(animals.size());
+        sb.append(", total animal energy: ");
+        int totalEnergy = 0;
+        for (Animal animal : animals) {
+            totalEnergy += animal.getEnergy();
+        }
+        sb.append(totalEnergy);
+        sb.append(".");
+        return sb.toString();
+    }
+
 }

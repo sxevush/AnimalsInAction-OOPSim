@@ -3,8 +3,8 @@ package agh.ics.oop;
 import java.util.*;
 
 public abstract class AbstractWorldMap {
-    protected final int width;
-    protected final int height;
+    protected int width;
+    protected int height;
     public int minBreedEnergy;
     public int energyToBreed;
     private int newPlants;
@@ -31,10 +31,11 @@ public abstract class AbstractWorldMap {
                 fieldArrayList.add(field);
             }
         }
-        Collections.shuffle( fieldArrayList );
+
     }
 
     public void addNewPlants() {
+        Collections.shuffle( fieldArrayList );
         fieldArrayList.stream()
                 .filter( field -> field.plant == 0 )
                 .sorted(Comparator.comparingInt( Field::getNumberOfDiedAnimals )
@@ -46,11 +47,11 @@ public abstract class AbstractWorldMap {
     public int getStartingAnimalEnergy() {
         return startingAnimalEnergy;
     }
-
+    public Field getField(Vector2d position) { return fields.get(position); }
+    public ArrayList<Field> getFieldArrayList() { return fieldArrayList; }
     public void setStartingAnimalEnergy(int startingEnergy) {
         this.startingAnimalEnergy = startingEnergy;
     }
-
     public void setNewPlants(int newPlants) {
         this.newPlants = newPlants;
     }
@@ -88,11 +89,6 @@ public abstract class AbstractWorldMap {
     }
 
     public abstract void checkBoundaries(Animal animal);
-
-    public String toString() {
-        MapVisualizer drawing = new MapVisualizer(this);
-        return drawing.draw(new Vector2d(0, 0), new Vector2d(width - 1, height - 1));
-    }
 
     public void setPlantEnergy(int plantEnergy) {
         this.plantEnergy = plantEnergy;
