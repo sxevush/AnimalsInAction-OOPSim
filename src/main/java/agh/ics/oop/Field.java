@@ -121,7 +121,7 @@ public class Field {
                 assert parent2 != null;
                 if (parent2.getEnergy() >= minBreedEnergy && parent2.getAge() > 0) {
 
-                    Animal newAnimal = new Animal( parent1, parent2, 2 * energyToBreed  );
+                    Animal newAnimal = new Animal( parent1, parent2, 2 * energyToBreed );
                     parent1.addChild();
                     parent2.addChild();
                     parent1.modifyEnergy( -energyToBreed );

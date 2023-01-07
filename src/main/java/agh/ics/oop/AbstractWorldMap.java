@@ -26,12 +26,11 @@ public abstract class AbstractWorldMap {
     protected AbstractWorldMap(int width, int height) {
         this.width = width;
         this.height = height;
-        createMap( width, height );
     }
 
     // Metoda createMap(int width, int height) tworzy nowe pola dla wszystkich pozycji na mapie.
     // Każde pole jest dodawane do mapy (fields) oraz do listy (fieldArrayList).
-    public void createMap (int width, int height) {
+    public void createMap () {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Field field = new Field(this);
@@ -72,7 +71,9 @@ public abstract class AbstractWorldMap {
     public void setNewPlants(int newPlants) { this.newPlants = newPlants; }
     public void setPlantEnergy(int plantEnergy) { this.plantEnergy = plantEnergy; }
     public void setMinBreedEnergy(int minBreedEnergy){ this.minBreedEnergy = minBreedEnergy; }
-    public void setEnergyToBreed(int energyToBreed){ this.energyToBreed = energyToBreed; }
+    public void setEnergyToBreed(int energyToBreed){
+        this.energyToBreed = energyToBreed;
+    }
     public void setNumberOfMutations(int numberOfMutations) { this.numberOfMutations = numberOfMutations; }
 
     // Metoda checkBoundaries(Animal animal) jest metodą abstrakcyjną i musi zostać

@@ -31,7 +31,7 @@ import java.util.Optional;
 public class App extends Application {
     private AbstractWorldMap map;
     private SimulationEngine engine;
-    private int fieldSize = 30;
+    private int fieldSize = 40;
     private int windowHeight;
     private int windowWidth;
     private GridPane grid = new GridPane();
@@ -63,6 +63,7 @@ public class App extends Application {
         map.setNumberOfMutations(numberOfMutations);
         map.setMinBreedEnergy(minBreedEnergy);
         map.setEnergyToBreed(energyToBreed);
+        map.createMap();
 
 
     }
